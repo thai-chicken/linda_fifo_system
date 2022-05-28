@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "tuples.pb.h"
 
 #define MSG_SIZE 80
 
@@ -23,13 +24,16 @@ pid_t get_process_pid()
   return getpid();
 }
 
+std::string get_fifo_name(){
+  return std::string("/tmp/fifo_") + std::to_string(get_process_pid());
+}
+
 std::string create_fifo()
 {
   // Create a fifo.
-  pid_t pid = get_process_pid();
-  std::string fifo_path = std::string("/tmp/fifo_") + std::to_string(pid);
-  mkfifo(fifo_path.c_str(), 0666);
-  return fifo_path;
+  std::string fifo_name = get_fifo_name();
+  mkfifo(fifo_name.c_str(), 0666);
+  return fifo_name;
 }
 
 int open_main_fifo()
@@ -40,26 +44,72 @@ int open_main_fifo()
   return fd_main;
 }
 
+void send_msg(int fd_cl, int fd_main)
+{
+  std::string msg = "Hello, server!";
+  pid_t pid = get_process_pid();
+  tuples::Message message;
+  message.set_pid(int(pid));
+  message.set_msg(msg);
+
+  std::string buffer;
+  message.SerializeToString(&buffer);
+  
+  printf("CLIENT | Sending message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer));
+  write(fd_main, buffer.c_str(), sizeof(buffer));
+  printf("CLIENT | Sent message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer));
+}
+
+
+int open_own_fifo(){
+  std::string fifo_path = create_fifo();
+  printf("CLIENT | Created fifo: %s\n", fifo_path.c_str());
+  
+  int fd_cl = open(fifo_path.c_str(), O_RDONLY | O_NDELAY);
+  printf("CLIENT | Opened client fifo: %d\n", fd_cl);
+  
+  return fd_cl;
+}
+
+void receive_msg(int fd_cl){
+  Message received_message;
+  int n;
+  tuples::Message message_serialized;
+  char buffer[MSG_SIZE];
+  
+  while ((n = read(fd_cl,buffer, sizeof(message_serialized))) <= 0)
+    {
+      if (n < 0)
+      {
+        perror("CLIENT | Error reading from main fifo.");
+      } 
+      else{
+        // tutaj bedzie trzeba wymyslec cos, zeby nie bylo aktywnego oczekiwania być może w pętli otwierać fifo
+        continue;
+      }
+    }
+  
+  message_serialized.ParseFromString(buffer);
+  received_message.pid = message_serialized.pid();
+  received_message.msg = message_serialized.msg();
+  printf("CLIENT | Message received: %s and pid received: %d \n", received_message.msg.c_str(), received_message.pid);
+
+}
+
+
 
 int main()
 {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
   int fd_cl, fd_main;
-  printf("CLIENT | Opened fifo: %d\n", fd_cl);
+  fd_cl = open_own_fifo();
   fd_main = open_main_fifo();
-  std::string fifo_path = create_fifo();
-  printf("CLIENT | Created fifo: %s\n", fifo_path.c_str());
-  // fd_cl = open(fifo_path.c_str(), O_RDONLY);
-  // printf("CLIENT | Opened main fifo: %d\n", fd_main);
-  std::string msg = "Hello, server!";
-  // pid_t pid = get_process_pid();
-  // Message message = {pid, msg};
-  // printf("CLIENT | Sending message: %s with size: %lu\n", message.msg.c_str(), sizeof(message));
-  write(fd_main, msg.c_str(), MSG_SIZE);
-  printf("CLIENT | Sent message: %s with size: %lu\n", msg.c_str(), sizeof(msg));
-  // Message received_message;
-  // read(fd_cl, &received_message, sizeof(received_message));
-  // printf("CLIENT | Received message: %s with size: %lu\n", received_message.msg.c_str(), sizeof(received_message));
+  send_msg(fd_cl, fd_main);
+
+  receive_msg(fd_cl);
+
   close(fd_main);
-  // close(fd_cl);
+  std::string fifo_path = get_fifo_name(); 
+  unlink(fifo_path.c_str());
   return 0;
 }

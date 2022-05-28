@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package tuples;
+
+message Message {
+	required int32 pid = 1;
+	required string msg = 2;
+}

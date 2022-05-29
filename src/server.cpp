@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "tuples.pb.h"
 
-#define MSG_SIZE 80
+#define MSG_SIZE 32
 #define FIFO_MAIN_PATH "/tmp/fifo_main"
 
 struct Message
@@ -22,11 +22,11 @@ pid_t get_process_pid()
   return getpid();
 }
 
-int open_client_fifo(pid_t pid)
+FILE* open_client_fifo(pid_t pid)
 {
   // Open the main fifo.
   std::string client_fifo_path = std::string("/tmp/fifo_") + std::to_string(pid);
-  int fd_client = open(client_fifo_path.c_str(), O_WRONLY);
+  FILE* fd_client = fopen(client_fifo_path.c_str(), "w");
   return fd_client;
 }
 
@@ -34,7 +34,8 @@ std::string create_main_fifo()
 {
   // Create a fifo.
   std::string fifo_name = FIFO_MAIN_PATH;
-  if (mknod(fifo_name.c_str(), 0666, 0) < 0)
+  umask(0);
+  if (mknod(fifo_name.c_str(), S_IFIFO | 0666, 0) < 0)
   {
     perror("SERVER | Error creating main fifo.");
   }
@@ -42,35 +43,34 @@ std::string create_main_fifo()
   return fifo_name;
 }
 
-void handle_client_request(int fd_main)
+void handle_client_request(std::string main_fifo)
 {
   while (1)
   {
     int n;
+    FILE* fd_main;
     Message message_in;
     tuples::Message message_in_serialized;
     char buffer[MSG_SIZE];
-    
     printf("SERVER | Waiting for message...\n");
-    while ((n = read(fd_main,buffer, sizeof(message_in_serialized))) <= 0)
+    
+    fd_main = fopen(main_fifo.c_str(), "r");
+    printf("SERVER | Opened main fifo!");
+    
+    if (fgets(buffer, sizeof(message_in_serialized),fd_main ) == NULL)
     {
-      if (n < 0)
-      {
-        perror("SERVER | Error reading from main fifo.");
-      } 
-      else{
-        // tutaj bedzie trzeba wymyslec cos, zeby nie bylo aktywnego oczekiwania
-        continue;
-      }
+      perror("SERVER | Error reading from main fifo.");
     }
-    printf("SERVER | Message received: %s and pid received: %d \n", message_in_serialized.msg().c_str(), message_in_serialized.pid());
+    printf("SERVER | Read message: %s\n", buffer);
 
     message_in_serialized.ParseFromString(buffer);
     message_in.pid = message_in_serialized.pid();
     message_in.msg = message_in_serialized.msg();
+    printf("SERVER | Message received: %s and pid received: %d \n", message_in.msg.c_str(), message_in.pid);
 
-    int fd_client = open_client_fifo(message_in.pid);
-    printf("SERVER | Opened client fifo: %d\n", fd_client);
+
+    FILE* fd_client = open_client_fifo(message_in.pid);
+    printf("SERVER | Opened client fifo: %d\n", message_in.pid);
     
     tuples::Message message_out;
     message_out.set_pid(int(get_process_pid()));
@@ -78,23 +78,26 @@ void handle_client_request(int fd_main)
     std::string buffer_out;
     message_out.SerializeToString(&buffer_out);
 
-    write(fd_client, buffer_out.c_str(), sizeof(buffer_out));
+    fputs(buffer_out.c_str(), fd_client);
+    fflush(fd_client);
     printf("SERVER | Sent message: %s with size: %lu\n", buffer_out.c_str(), sizeof(buffer_out));
-    close(fd_client);
+    fclose(fd_client);
+    fclose(fd_main);
+    break;
   }
 }
 
 
 int main()
 {
-  int fd_main;
   std::string main_fifo = create_main_fifo();
   printf("SERVER | Created fifo: %s\n", main_fifo.c_str());
-  fd_main = open(main_fifo.c_str(), O_RDONLY);
-  printf("SERVER | Opened fifo: %d\n", fd_main);
+
   
-  handle_client_request(fd_main);
+  handle_client_request(main_fifo);
   
   unlink(FIFO_MAIN_PATH);
+  printf("SERVER | Unlinked own descriptor!\n");
+
   return 0;
 }

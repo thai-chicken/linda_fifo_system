@@ -54,10 +54,15 @@ void handle_client_request(std::string main_fifo)
     char buffer[MSG_SIZE];
     printf("SERVER | Waiting for message...\n");
     
-    fd_main = fopen(main_fifo.c_str(), "r");
-    printf("SERVER | Opened main fifo!");
-    
-    if (fgets(buffer, sizeof(message_in_serialized),fd_main ) == NULL)
+    if ((fd_main = fopen(main_fifo.c_str(), "r"))==NULL){
+      perror("SERVER | Error opening main fifo.");
+      exit(1);
+    }
+    else{
+      printf("SERVER | Opened main fifo!\n");
+    }
+
+    if (fgets(buffer, MSG_SIZE,fd_main ) == NULL)
     {
       perror("SERVER | Error reading from main fifo.");
     }
@@ -83,7 +88,6 @@ void handle_client_request(std::string main_fifo)
     printf("SERVER | Sent message: %s with size: %lu\n", buffer_out.c_str(), sizeof(buffer_out));
     fclose(fd_client);
     fclose(fd_main);
-    break;
   }
 }
 

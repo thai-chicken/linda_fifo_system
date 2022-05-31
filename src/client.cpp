@@ -35,7 +35,8 @@ std::string create_fifo()
   umask(0);
   if (mknod(fifo_name.c_str(), S_IFIFO | 0666, 0) < 0)
   {
-    perror("CLIENT | Error creating main fifo.");
+    perror("CLIENT | Error creating main fifo | ");
+    exit(1);
   }
   return fifo_name;
 }
@@ -44,7 +45,14 @@ FILE* open_main_fifo()
 {
   // Open the main fifo.
   std::string main_fifo_path = "/tmp/fifo_main";
-  FILE* fd_main = fopen(main_fifo_path.c_str(), "w");
+  FILE* fd_main;
+  if((fd_main = fopen(main_fifo_path.c_str(), "w"))==NULL){
+    perror("CLIENT | Error opening main fifo | ");
+    exit(1);
+  }
+  else{
+    printf("CLIENT | Opened main fifo!\n");
+  }
   return fd_main;
 }
 
@@ -59,10 +67,10 @@ void send_msg(FILE* fd_main)
   std::string buffer;
   message.SerializeToString(&buffer);
   
-  printf("CLIENT | Sending message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer));
+  printf("CLIENT | Sending message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer.c_str()));
   fputs(buffer.c_str(), fd_main);
   fflush(fd_main);
-  printf("CLIENT | Sent message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer));
+  printf("CLIENT | Sent message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer.c_str()));
 }
 
 
@@ -70,9 +78,16 @@ FILE* open_own_fifo(){
   std::string fifo_path = create_fifo();
   printf("CLIENT | Created fifo: %s\n", fifo_path.c_str());
   
-  FILE* fd_cl = fopen(fifo_path.c_str(), "r");
-  printf("CLIENT | Opened client fifo: %d\n", fd_cl);
-  
+  FILE* fd_cl; 
+  if ((fd_cl = fopen(fifo_path.c_str(), "r"))==NULL)
+  {
+    perror("CLIENT | Error opening client fifo.");
+    exit(1);
+  }
+  else{
+    printf("CLIENT | Opened client fifo: %s\n", fifo_path.c_str());
+  }
+
   return fd_cl;
 }
 
@@ -81,8 +96,8 @@ void receive_msg(FILE* fd_cl){
   int n;
   tuples::Message message_serialized;
   char buffer[MSG_SIZE];
-  printf("HERE?");
-  if (fgets(buffer, sizeof(message_serialized),fd_cl,)==NULL)
+
+  if (fgets(buffer, MSG_SIZE,fd_cl)==NULL)
   {
       perror("CLIENT | Error reading from main fifo."); 
   }
@@ -98,17 +113,35 @@ void receive_msg(FILE* fd_cl){
 
 int main()
 {
-  FILE* fd_cl, fd_main;
+  printf("CLIENT | My fifo: %s\n", get_fifo_name().c_str());
+  FILE* fd_cl;
+
   FILE* fd_main = open_main_fifo();
   send_msg(fd_main);
+
+  if (fclose(fd_main) != 0)
+  {
+    perror("CLIENT | Error closing main fifo | ");
+    exit(1);
+  }
+  else{
+    printf("CLIENT | Closed main fifo.\n");
+  }
+
+
   fd_cl = open_own_fifo();
   receive_msg(fd_cl);
 
-  close(fd_main);
-  printf("CLIENT | Closed main fifo: %d.\n", fd_main);
-  
+
   std::string fifo_path = get_fifo_name(); 
-  unlink(fifo_path.c_str());
-  printf("CLIENT | Unlinked fifo: %s\n", fifo_path.c_str());
+  if (unlink(fifo_path.c_str()) == -1)
+  {
+    perror("CLIENT | Error unlinking fifo | ");
+    exit(1);
+  }
+  else{
+    printf("CLIENT | Unlinked fifo: %s\n", fifo_path.c_str());
+  }
+  
   return 0;
 }

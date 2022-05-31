@@ -6,6 +6,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "tuples.pb.h"
+#include "TupleContainer.h"
+#include "RequestContainer.h"
+#include "Request.h"
 
 #define MSG_SIZE 32
 #define FIFO_MAIN_PATH "/tmp/fifo_main"
@@ -43,7 +46,7 @@ std::string create_main_fifo()
   return fifo_name;
 }
 
-void handle_client_request(std::string main_fifo)
+void handle_client_request(std::string main_fifo, TupleContainer* tuples, RequestContainer* requests)
 {
   while (1)
   {
@@ -72,8 +75,18 @@ void handle_client_request(std::string main_fifo)
     message_in.pid = message_in_serialized.pid();
     message_in.msg = message_in_serialized.msg();
     printf("SERVER | Message received: %s and pid received: %d \n", message_in.msg.c_str(), message_in.pid);
+    
+    tuples->add(message_in.msg);
+    printf("\nTuples:\n");
+    tuples->show_elems();
+    printf("~~~~~~~\n\n");
 
-
+    Request request(message_in.msg, message_in.pid);
+    requests->add(request);
+    printf("\nRequests:\n");
+    requests->show_elems();
+    printf("~~~~~~~\n\n");
+    
     FILE* fd_client = open_client_fifo(message_in.pid);
     printf("SERVER | Opened client fifo: %d\n", message_in.pid);
     
@@ -94,11 +107,23 @@ void handle_client_request(std::string main_fifo)
 
 int main()
 {
+  TupleContainer tuples;
+  RequestContainer requests;
+
+  printf("\nTuples:\n");
+  tuples.show_elems();
+  printf("~~~~~~~\n\n");
+ 
+  printf("\nRequests:\n");
+  requests.show_elems();
+  printf("~~~~~~~\n\n");
+  
+  
   std::string main_fifo = create_main_fifo();
   printf("SERVER | Created fifo: %s\n", main_fifo.c_str());
 
   
-  handle_client_request(main_fifo);
+  handle_client_request(main_fifo, &tuples, &requests);
   
   unlink(FIFO_MAIN_PATH);
   printf("SERVER | Unlinked own descriptor!\n");

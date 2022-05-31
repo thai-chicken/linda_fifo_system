@@ -1,19 +1,22 @@
 CXX = g++
 SOURCES = src/client.cpp src/server.cpp
 
-all: client server
+all: requestcontainer.o client server
 
-# client : client.o
-# 	$(CXX) -o bin/client bin/client.o
+requests.o:
+	$(CXX) -std=c++11 -I . -c src/Request.cpp -o bin/request.o
 
-# server : server.o
-# 	$(CXX) -o bin/server bin/server.o
+requestcontainer.o: requests.o
+	$(CXX) -std=c++11 -I . -c src/RequestContainer.cpp -o bin/requestcontainer.o
+
+tuplecontainer:  
+	$(CXX) -std=c++11 -I . -c src/TupleContainer.cpp -o bin/tuplecontainer.o
 
 client: 
-	$(CXX) src/client.cpp src/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/client
+	$(CXX) src/client.cpp src/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/client 
 
-server:
-	$(CXX) src/server.cpp  src/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/server
+server: tuplecontainer requestcontainer.o
+	$(CXX) src/server.cpp bin/request.o bin/requestcontainer.o bin/tuplecontainer.o src/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/server
 
 clean:
 	rm bin/client bin/servers

@@ -5,19 +5,17 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <boost/algorithm/string.hpp>
 #include "tuples.pb.h"
 #include "TupleContainer.h"
 #include "RequestContainer.h"
 #include "Request.h"
+#include "Message.h"
+
 
 #define MSG_SIZE 32
 #define FIFO_MAIN_PATH "/tmp/fifo_main"
 
-struct Message
-{
-  pid_t pid;
-  std::string msg;
-};
 
 pid_t get_process_pid()
 {
@@ -48,7 +46,8 @@ std::string create_main_fifo()
 
 void handle_client_request(std::string main_fifo, TupleContainer* tuples, RequestContainer* requests)
 {
-  while (1)
+  bool quit = false;
+  while (!quit)
   {
     int n;
     FILE* fd_main;
@@ -74,15 +73,31 @@ void handle_client_request(std::string main_fifo, TupleContainer* tuples, Reques
     message_in_serialized.ParseFromString(buffer);
     message_in.pid = message_in_serialized.pid();
     message_in.msg = message_in_serialized.msg();
+    message_in.command = message_in_serialized.command();
     printf("SERVER | Message received: %s and pid received: %d \n", message_in.msg.c_str(), message_in.pid);
     
-    tuples->add(message_in.msg);
+    // lower string
+    boost::algorithm::to_lower(message_in.command);
+
+    if  (message_in.command == "input"){
+      Request request(message_in.msg, message_in.pid);
+      requests->add(request);
+    }
+    else if (message_in.command == "output"){
+      tuples->add(message_in.msg);
+    }
+    else if (message_in.command == "exit"){
+      printf("SERVER | Received exit command.\n");
+      quit=true;
+    }
+    else{
+      printf("SERVER | Unknown command: %s\n", message_in.command.c_str());
+    }
+
     printf("\nTuples:\n");
     tuples->show_elems();
     printf("~~~~~~~\n\n");
 
-    Request request(message_in.msg, message_in.pid);
-    requests->add(request);
     printf("\nRequests:\n");
     requests->show_elems();
     printf("~~~~~~~\n\n");
@@ -93,6 +108,7 @@ void handle_client_request(std::string main_fifo, TupleContainer* tuples, Reques
     tuples::Message message_out;
     message_out.set_pid(int(get_process_pid()));
     message_out.set_msg("Hello, client!");
+    message_out.set_command("reply");
     std::string buffer_out;
     message_out.SerializeToString(&buffer_out);
 

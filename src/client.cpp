@@ -8,15 +8,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "tuples.pb.h"
+#include "Message.h"
 
 #define MSG_SIZE 32
 
-
-struct Message
-{
-  pid_t pid;
-  std::string msg;
-};
 
 pid_t get_process_pid()
 {
@@ -56,13 +51,13 @@ FILE* open_main_fifo()
   return fd_main;
 }
 
-void send_msg(FILE* fd_main, std::string msg , std::string command)
+void send_msg(FILE* fd_main, std::string command , std::string msg)
 {
-  std::string msg_to_send = command + " | " + msg;
   pid_t pid = get_process_pid();
   tuples::Message message;
   message.set_pid(int(pid));
-  message.set_msg(msg_to_send);
+  message.set_msg(msg);
+  message.set_command(command);
 
   std::string buffer;
   message.SerializeToString(&buffer);
@@ -124,7 +119,7 @@ int main(int argc, char const *argv[])
   FILE* fd_cl;
 
   FILE* fd_main = open_main_fifo();
-  send_msg(fd_main, msg, command);
+  send_msg(fd_main, command, msg);
 
   if (fclose(fd_main) != 0)
   {

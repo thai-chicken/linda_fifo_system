@@ -186,10 +186,40 @@ class Message PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMsgFieldNumber = 2,
+    kCommandFieldNumber = 2,
+    kMsgFieldNumber = 3,
     kPidFieldNumber = 1,
   };
-  // required string msg = 2;
+  // required string command = 2;
+  bool has_command() const;
+  private:
+  bool _internal_has_command() const;
+  public:
+  void clear_command();
+  const std::string& command() const;
+  void set_command(const std::string& value);
+  void set_command(std::string&& value);
+  void set_command(const char* value);
+  void set_command(const char* value, size_t size);
+  std::string* mutable_command();
+  std::string* release_command();
+  void set_allocated_command(std::string* command);
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  std::string* unsafe_arena_release_command();
+  GOOGLE_PROTOBUF_RUNTIME_DEPRECATED("The unsafe_arena_ accessors for"
+  "    string fields are deprecated and will be removed in a"
+  "    future release.")
+  void unsafe_arena_set_allocated_command(
+      std::string* command);
+  private:
+  const std::string& _internal_command() const;
+  void _internal_set_command(const std::string& value);
+  std::string* _internal_mutable_command();
+  public:
+
+  // required string msg = 3;
   bool has_msg() const;
   private:
   bool _internal_has_msg() const;
@@ -243,6 +273,7 @@ class Message PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr command_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
   ::PROTOBUF_NAMESPACE_ID::int32 pid_;
   friend struct ::TableStruct_tuples_2eproto;
@@ -260,7 +291,7 @@ class Message PROTOBUF_FINAL :
 
 // required int32 pid = 1;
 inline bool Message::_internal_has_pid() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool Message::has_pid() const {
@@ -268,7 +299,7 @@ inline bool Message::has_pid() const {
 }
 inline void Message::clear_pid() {
   pid_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 Message::_internal_pid() const {
   return pid_;
@@ -278,7 +309,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 Message::pid() const {
   return _internal_pid();
 }
 inline void Message::_internal_set_pid(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   pid_ = value;
 }
 inline void Message::set_pid(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -286,9 +317,102 @@ inline void Message::set_pid(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:tuples.Message.pid)
 }
 
-// required string msg = 2;
-inline bool Message::_internal_has_msg() const {
+// required string command = 2;
+inline bool Message::_internal_has_command() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool Message::has_command() const {
+  return _internal_has_command();
+}
+inline void Message::clear_command() {
+  command_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& Message::command() const {
+  // @@protoc_insertion_point(field_get:tuples.Message.command)
+  return _internal_command();
+}
+inline void Message::set_command(const std::string& value) {
+  _internal_set_command(value);
+  // @@protoc_insertion_point(field_set:tuples.Message.command)
+}
+inline std::string* Message::mutable_command() {
+  // @@protoc_insertion_point(field_mutable:tuples.Message.command)
+  return _internal_mutable_command();
+}
+inline const std::string& Message::_internal_command() const {
+  return command_.Get();
+}
+inline void Message::_internal_set_command(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void Message::set_command(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  command_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:tuples.Message.command)
+}
+inline void Message::set_command(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:tuples.Message.command)
+}
+inline void Message::set_command(const char* value,
+    size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:tuples.Message.command)
+}
+inline std::string* Message::_internal_mutable_command() {
+  _has_bits_[0] |= 0x00000001u;
+  return command_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* Message::release_command() {
+  // @@protoc_insertion_point(field_release:tuples.Message.command)
+  if (!_internal_has_command()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return command_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void Message::set_allocated_command(std::string* command) {
+  if (command != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  command_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), command,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:tuples.Message.command)
+}
+inline std::string* Message::unsafe_arena_release_command() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:tuples.Message.command)
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  _has_bits_[0] &= ~0x00000001u;
+  return command_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      GetArena());
+}
+inline void Message::unsafe_arena_set_allocated_command(
+    std::string* command) {
+  GOOGLE_DCHECK(GetArena() != nullptr);
+  if (command != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  command_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      command, GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:tuples.Message.command)
+}
+
+// required string msg = 3;
+inline bool Message::_internal_has_msg() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
 inline bool Message::has_msg() const {
@@ -296,7 +420,7 @@ inline bool Message::has_msg() const {
 }
 inline void Message::clear_msg() {
   msg_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline const std::string& Message::msg() const {
   // @@protoc_insertion_point(field_get:tuples.Message.msg)
@@ -314,31 +438,31 @@ inline const std::string& Message::_internal_msg() const {
   return msg_.Get();
 }
 inline void Message::_internal_set_msg(const std::string& value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
 }
 inline void Message::set_msg(std::string&& value) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   msg_.Set(
     &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
   // @@protoc_insertion_point(field_set_rvalue:tuples.Message.msg)
 }
 inline void Message::set_msg(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
               GetArena());
   // @@protoc_insertion_point(field_set_char:tuples.Message.msg)
 }
 inline void Message::set_msg(const char* value,
     size_t size) {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
   // @@protoc_insertion_point(field_set_pointer:tuples.Message.msg)
 }
 inline std::string* Message::_internal_mutable_msg() {
-  _has_bits_[0] |= 0x00000001u;
+  _has_bits_[0] |= 0x00000002u;
   return msg_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline std::string* Message::release_msg() {
@@ -346,14 +470,14 @@ inline std::string* Message::release_msg() {
   if (!_internal_has_msg()) {
     return nullptr;
   }
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
   return msg_.ReleaseNonDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
 inline void Message::set_allocated_msg(std::string* msg) {
   if (msg != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
+    _has_bits_[0] |= 0x00000002u;
   } else {
-    _has_bits_[0] &= ~0x00000001u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   msg_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), msg,
       GetArena());
@@ -362,7 +486,7 @@ inline void Message::set_allocated_msg(std::string* msg) {
 inline std::string* Message::unsafe_arena_release_msg() {
   // @@protoc_insertion_point(field_unsafe_arena_release:tuples.Message.msg)
   GOOGLE_DCHECK(GetArena() != nullptr);
-  _has_bits_[0] &= ~0x00000001u;
+  _has_bits_[0] &= ~0x00000002u;
   return msg_.UnsafeArenaRelease(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       GetArena());
 }
@@ -370,9 +494,9 @@ inline void Message::unsafe_arena_set_allocated_msg(
     std::string* msg) {
   GOOGLE_DCHECK(GetArena() != nullptr);
   if (msg != nullptr) {
-    _has_bits_[0] |= 0x00000001u;
+    _has_bits_[0] |= 0x00000002u;
   } else {
-    _has_bits_[0] &= ~0x00000001u;
+    _has_bits_[0] &= ~0x00000002u;
   }
   msg_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       msg, GetArena());

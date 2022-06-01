@@ -45,12 +45,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tuples_2eproto::offsets[] PROT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::tuples::Message, pid_),
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, command_),
   PROTOBUF_FIELD_OFFSET(::tuples::Message, msg_),
-  1,
+  2,
   0,
+  1,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 7, sizeof(::tuples::Message)},
+  { 0, 8, sizeof(::tuples::Message)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -58,8 +60,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_tuples_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014tuples.proto\022\006tuples\"#\n\007Message\022\013\n\003pid"
-  "\030\001 \002(\005\022\013\n\003msg\030\002 \002(\t"
+  "\n\014tuples.proto\022\006tuples\"4\n\007Message\022\013\n\003pid"
+  "\030\001 \002(\005\022\017\n\007command\030\002 \002(\t\022\013\n\003msg\030\003 \002(\t"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tuples_2eproto_deps[1] = {
 };
@@ -68,7 +70,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tup
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tuples_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tuples_2eproto = {
-  false, false, descriptor_table_protodef_tuples_2eproto, "tuples.proto", 59,
+  false, false, descriptor_table_protodef_tuples_2eproto, "tuples.proto", 76,
   &descriptor_table_tuples_2eproto_once, descriptor_table_tuples_2eproto_sccs, descriptor_table_tuples_2eproto_deps, 1, 0,
   schemas, file_default_instances, TableStruct_tuples_2eproto::offsets,
   file_level_metadata_tuples_2eproto, 1, file_level_enum_descriptors_tuples_2eproto, file_level_service_descriptors_tuples_2eproto,
@@ -86,13 +88,16 @@ class Message::_Internal {
  public:
   using HasBits = decltype(std::declval<Message>()._has_bits_);
   static void set_has_pid(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
+    (*has_bits)[0] |= 4u;
   }
-  static void set_has_msg(HasBits* has_bits) {
+  static void set_has_command(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+  static void set_has_msg(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
   static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000003) ^ 0x00000003) != 0;
+    return ((has_bits[0] & 0x00000007) ^ 0x00000007) != 0;
   }
 };
 
@@ -106,6 +111,11 @@ Message::Message(const Message& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _has_bits_(from._has_bits_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_command()) {
+    command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_command(),
+      GetArena());
+  }
   msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   if (from._internal_has_msg()) {
     msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_msg(),
@@ -117,6 +127,7 @@ Message::Message(const Message& from)
 
 void Message::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_tuples_2eproto.base);
+  command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   pid_ = 0;
 }
@@ -129,6 +140,7 @@ Message::~Message() {
 
 void Message::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
+  command_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   msg_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -154,8 +166,13 @@ void Message::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    msg_.ClearNonDefaultToEmpty();
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      command_.ClearNonDefaultToEmpty();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      msg_.ClearNonDefaultToEmpty();
+    }
   }
   pid_ = 0;
   _has_bits_.Clear();
@@ -179,9 +196,20 @@ const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::in
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // required string msg = 2;
+      // required string command = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_command();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          #ifndef NDEBUG
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "tuples.Message.command");
+          #endif  // !NDEBUG
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // required string msg = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           auto str = _internal_mutable_msg();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
@@ -221,19 +249,29 @@ failure:
 
   cached_has_bits = _has_bits_[0];
   // required int32 pid = 1;
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_pid(), target);
   }
 
-  // required string msg = 2;
+  // required string command = 2;
   if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_command().data(), static_cast<int>(this->_internal_command().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "tuples.Message.command");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_command(), target);
+  }
+
+  // required string msg = 3;
+  if (cached_has_bits & 0x00000002u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
       this->_internal_msg().data(), static_cast<int>(this->_internal_msg().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
       "tuples.Message.msg");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_msg(), target);
+        3, this->_internal_msg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -248,8 +286,15 @@ size_t Message::RequiredFieldsByteSizeFallback() const {
 // @@protoc_insertion_point(required_fields_byte_size_fallback_start:tuples.Message)
   size_t total_size = 0;
 
+  if (_internal_has_command()) {
+    // required string command = 2;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_command());
+  }
+
   if (_internal_has_msg()) {
-    // required string msg = 2;
+    // required string msg = 3;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_msg());
@@ -268,8 +313,13 @@ size_t Message::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tuples.Message)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x00000003) ^ 0x00000003) == 0) {  // All required fields are present.
-    // required string msg = 2;
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required string command = 2;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_command());
+
+    // required string msg = 3;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_msg());
@@ -318,11 +368,14 @@ void Message::MergeFrom(const Message& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_msg(from._internal_msg());
+      _internal_set_command(from._internal_command());
     }
     if (cached_has_bits & 0x00000002u) {
+      _internal_set_msg(from._internal_msg());
+    }
+    if (cached_has_bits & 0x00000004u) {
       pid_ = from.pid_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -352,6 +405,7 @@ void Message::InternalSwap(Message* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   swap(_has_bits_[0], other->_has_bits_[0]);
+  command_.Swap(&other->command_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   msg_.Swap(&other->msg_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   swap(pid_, other->pid_);
 }

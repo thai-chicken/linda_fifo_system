@@ -56,13 +56,13 @@ FILE* open_main_fifo()
   return fd_main;
 }
 
-void send_msg(FILE* fd_main)
+void send_msg(FILE* fd_main, std::string msg , std::string command)
 {
-  std::string msg = "Hello, server!";
+  std::string msg_to_send = command + " | " + msg;
   pid_t pid = get_process_pid();
   tuples::Message message;
   message.set_pid(int(pid));
-  message.set_msg(msg);
+  message.set_msg(msg_to_send);
 
   std::string buffer;
   message.SerializeToString(&buffer);
@@ -111,13 +111,20 @@ void receive_msg(FILE* fd_cl){
 
 
 
-int main()
+int main(int argc, char const *argv[])
 {
+  if (argc != 3){
+    printf("CLIENT | Usage: ./client <command> <message>\n");
+    exit(1);
+  }
+  std::string msg = argv[2];
+  std::string command = argv[1];
+
   printf("CLIENT | My fifo: %s\n", get_fifo_name().c_str());
   FILE* fd_cl;
 
   FILE* fd_main = open_main_fifo();
-  send_msg(fd_main);
+  send_msg(fd_main, msg, command);
 
   if (fclose(fd_main) != 0)
   {

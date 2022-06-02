@@ -56,16 +56,15 @@ Message Server::get_msg_deserialized(FILE* fd_main)
 void Server::handle_msg(Message msg_in)
 {
   boost::algorithm::to_lower(msg_in.command);
-  if (msg_in.command == "input")
+  if ((msg_in.command == "input") || (msg_in.command == "read"))
   {
-    Request request(msg_in.msg, msg_in.pid);
-    this->request_container.add(request);
+    this->perform_request(msg_in);
   }
   else if (msg_in.command == "output")
   {
-    this->tuple_container.add(msg_in.msg);
+    this->perform_tuple(msg_in);
   }
-  else if (msg_in.command == "exit")
+  else if (msg_in.command == "exit" || msg_in.command == "quit")
   {
     printf("SERVER | Received exit command.\n");
     this->quit = true;
@@ -89,20 +88,25 @@ void Server::handle_requests()
     msg_in = this->get_msg_deserialized(fd_main);
     this->handle_msg(msg_in);
     this->show_state();
-    this->send_to_client(msg_in);
+    // this->send_to_client(msg_in);
     fclose(fd_main);
   }
 }
 
-void Server::show_state() const
+void Server::show_state()
 {
-  printf("\nTuples:\n");
-  this->tuple_container.show_elems();
-  printf("~~~~~~~\n\n");
-
-  printf("\nRequests:\n");
-  this->request_container.show_elems();
-  printf("~~~~~~~\n\n");
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_tuple);
+    printf("\nTuples:\n");
+    this->tuple_container.show_elems();
+    printf("~~~~~~~\n\n");
+  }
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_request);
+    printf("\nRequests:\n");
+    this->request_container.show_elems();
+    printf("~~~~~~~\n\n");
+  }
 }
 
 FILE* Server::open_client_fifo(pid_t pid)
@@ -123,16 +127,16 @@ FILE* Server::open_client_fifo(pid_t pid)
   return fd_client;
 }
 
-void Server::send_to_client(Message msg)
+void Server::send_to_client(std::string msg, std::string command, pid_t pid)
 {
   tuples::Message msg_serialized;
   std::string buffer_out;
 
-  FILE* fd_client = open_client_fifo(msg.pid);
+  FILE* fd_client = open_client_fifo(pid);
 
   msg_serialized.set_pid(int(getpid())); // sends own pid to client
-  msg_serialized.set_command("RETURN");
-  msg_serialized.set_msg("Hello client " + std::to_string(msg.pid) + "!");
+  msg_serialized.set_command(command);
+  msg_serialized.set_msg(msg);
   msg_serialized.SerializeToString(&buffer_out);
 
   if (fputs(buffer_out.c_str(), fd_client) == EOF)
@@ -172,4 +176,62 @@ void Server::run()
   this->create_main_fifo();
   this->handle_requests();
   this->destruct_fifo();
+}
+
+void Server::perform_request(Message msg)
+{
+  int idx_in_tuple;
+  Message message_to_send;
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_tuple);
+    if ((idx_in_tuple = this->tuple_container.find(msg.msg)) != -1)
+    {
+      message_to_send.msg = this->tuple_container.get(idx_in_tuple);
+      message_to_send.pid = msg.pid;
+      message_to_send.command = "return";
+      printf("PERFORM REQUEST | CREATING NEW THREAD!\n");
+      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+      send_thread.detach();
+
+      if (msg.command == "input")
+      {
+        this->tuple_container.remove(idx_in_tuple);
+      }
+      return;
+    }
+  }
+  Request request(msg.msg, msg.pid, msg.command);
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_request);
+    this->request_container.add(request);
+  }
+  return;
+}
+
+void Server::perform_tuple(Message msg)
+{
+  int idx_in_req;
+  Message message_to_send;
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_request);
+    if ((idx_in_req = this->request_container.find(msg.msg)) != -1)
+    {
+      message_to_send.msg = msg.msg;
+      message_to_send.pid = this->request_container.get(idx_in_req).get_request_pid();
+      message_to_send.command = "return";
+      printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
+
+      this->request_container.remove(idx_in_req);
+
+      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+      send_thread.detach();
+    }
+  }
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_tuple);
+    if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).get_command() == "read"))
+    {
+      this->tuple_container.add(msg.msg);
+    }
+  }
 }

@@ -4,6 +4,7 @@
 #include "../common/Message.h"
 #include "../common/tuples.pb.h"
 
+#include <boost/algorithm/string.hpp>
 #include <string>
 #include <sys/stat.h>
 

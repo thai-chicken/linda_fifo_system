@@ -1,60 +1,91 @@
 #include <src/server/TupleContainer.h>
 
-TupleContainer::TupleContainer(){
-    tuples={};
+TupleContainer::TupleContainer()
+{
+  tuples = {};
 }
 
-TupleContainer::~TupleContainer(){
-    tuples.clear();
+TupleContainer::~TupleContainer()
+{
+  tuples.clear();
 }
 
-void TupleContainer::add(const std::string tuple){
-    tuples.push_back(tuple);
+void TupleContainer::add(const std::string tuple)
+{
+  tuples.push_back(tuple);
 }
 
-std::string TupleContainer::get(int index) const{
-    if (tuples.size() > index){
-        std::list<std::string>::const_iterator it = tuples.begin();
-        std::advance(it, index);
-        return *it;
+std::string TupleContainer::get(int index) const
+{
+  if (tuples.size() > index)
+  {
+    std::list<std::string>::const_iterator it = tuples.begin();
+    std::advance(it, index);
+    return *it;
+  }
+  else
+  {
+    return "";
+  }
+}
+
+void TupleContainer::remove(int index)
+{
+  if (tuples.size() > index)
+  {
+    std::list<std::string>::const_iterator it = tuples.begin();
+    std::advance(it, index);
+    tuples.erase(it);
+  }
+}
+
+bool TupleContainer::is_in(const std::string tuple) const
+{
+  for (std::list<std::string>::const_iterator it = tuples.begin(); it != tuples.end(); ++it)
+  {
+    if (*it == tuple)
+    {
+      return true;
     }
-    else{
-        return "";
-    }
+  }
+  return false;
 }
 
-void TupleContainer::remove(int index){
-    if (tuples.size() > index){
-        std::list<std::string>::const_iterator it = tuples.begin();
-        std::advance(it, index);
-        tuples.erase(it);
-    }
+int TupleContainer::size() const
+{
+  return tuples.size();
 }
 
-bool TupleContainer::is_in(const std::string tuple) const{
-    for (std::list<std::string>::const_iterator it = tuples.begin(); it != tuples.end(); ++it){
-        if (*it == tuple){
-            return true;
-        }
+void TupleContainer::show_elems() const
+{
+  if (tuples.size() > 0)
+  {
+    for (std::list<std::string>::const_iterator it = tuples.begin(); it != tuples.end(); ++it)
+    {
+      std::cout << *it << std::endl;
     }
-    return false;
+  }
+  else
+  {
+    std::cout << "No tuples in container" << std::endl;
+  }
 }
 
-int TupleContainer::size() const{
-    return tuples.size();
+void TupleContainer::clear()
+{
+  tuples.clear();
 }
 
-void TupleContainer::show_elems() const{
-    if (tuples.size() > 0){
-        for (std::list<std::string>::const_iterator it = tuples.begin(); it != tuples.end(); ++it){
-            std::cout << *it << std::endl;
-        }
+int TupleContainer::find(const std::string tuple) const
+{
+  int index = 0;
+  for (std::list<std::string>::const_iterator it = tuples.begin(); it != tuples.end(); ++it)
+  {
+    if (*it == tuple)
+    {
+      return index;
     }
-    else{
-        std::cout << "No tuples in container" << std::endl;
-    }
-}
-
-void TupleContainer::clear(){
-    tuples.clear();
+    index++;
+  }
+  return -1;
 }

@@ -110,6 +110,7 @@ void Client::receive_msg()
   printf("CLIENT | Message received: %s and pid received: %d \n", msg.msg.c_str(), msg.pid);
 
   this->close_own_fifo(fd_client);
+  this->destroy_own_fifo();
 }
 
 void Client::send_msg(std::string msg, std::string cmd)
@@ -135,6 +136,13 @@ void Client::send_msg(std::string msg, std::string cmd)
 void Client::action(std::string msg, std::string cmd)
 {
   this->send_msg(msg, cmd);
-  this->receive_msg();
-  this->destroy_own_fifo();
+  boost::algorithm::to_lower(cmd);
+  if (cmd == "input" || cmd == "read")
+  {
+    this->receive_msg();
+  }
+  else if (cmd != "exit" && cmd != "quit" && cmd != "output")
+  {
+    printf("CLIENT | Invalid command.\n");
+  }
 }

@@ -14,6 +14,7 @@ class RequestContainer {
         int size() const;
         bool is_in(const Request request) const;
         void show_elems() const;
+        void clear();
     
     private:
         std::list <Request*> requests;

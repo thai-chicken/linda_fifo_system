@@ -16,6 +16,7 @@ public:
     int size() const;
     bool is_in(const std::string tuple) const;
     void show_elems() const;
+    void clear();
 
 private:
     std::list <std::string> tuples;

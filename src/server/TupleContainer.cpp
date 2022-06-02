@@ -1,4 +1,4 @@
-#include <src/TupleContainer.h>
+#include <src/server/TupleContainer.h>
 
 TupleContainer::TupleContainer(){
     tuples={};
@@ -53,4 +53,8 @@ void TupleContainer::show_elems() const{
     else{
         std::cout << "No tuples in container" << std::endl;
     }
+}
+
+void TupleContainer::clear(){
+    tuples.clear();
 }

@@ -59,5 +59,9 @@ void RequestContainer::show_elems() const{
     }
 }
 
-
-
+void RequestContainer::clear(){
+    for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); ++it){
+        delete *it;
+    }
+    requests.clear();
+}

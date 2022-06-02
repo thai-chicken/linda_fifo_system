@@ -211,6 +211,7 @@ void Server::perform_request(Message msg)
 void Server::perform_tuple(Message msg)
 {
   int idx_in_req;
+  std::string command = "";
   Message message_to_send;
   {
     std::lock_guard<std::mutex> lock(this->mtx_request);
@@ -221,6 +222,7 @@ void Server::perform_tuple(Message msg)
       message_to_send.command = "return";
       printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
 
+      command = this->request_container.get(idx_in_req).get_command();
       this->request_container.remove(idx_in_req);
 
       std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
@@ -229,7 +231,7 @@ void Server::perform_tuple(Message msg)
   }
   {
     std::lock_guard<std::mutex> lock(this->mtx_tuple);
-    if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).get_command() == "read"))
+    if ((idx_in_req == -1) || (idx_in_req != -1 && command == "read"))
     {
       this->tuple_container.add(msg.msg);
     }

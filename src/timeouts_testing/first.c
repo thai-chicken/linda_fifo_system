@@ -1,14 +1,24 @@
 #include<stdio.h>
 #include<unistd.h>
-#include<signal.h>
+
 #include<sys/types.h>
 #include<stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 
-static void handler(int sig, siginfo_t *si, void *uap)
+class Siema
 {
-  printf("\tsending process ID: si_pid=%d\n", si->si_pid);
+    public:
+        Siema(){b=4;};
+        static int b;
+};
+
+int a = 5;
+
+void handler(int sig, siginfo_t *si, void *uap)
+{
+  printf("\tsending process ID: si_pid=%d\nnumber: %d", si->si_pid, a);
+  Siema::b = Siema::b+1;
   waitpid(si->si_pid, NULL, 0);
 }
 
@@ -18,8 +28,14 @@ void sig_handler(int signum){
     kill(ppid, SIGUSR1);
 }
 
-void sig_usr_handler(int signum){
-    printf("Received sigusr!\n");
+// void sig_usr_handler(int signum){
+//     printf("Received sigusr!\n");
+// }
+
+int point(int x = 3, int y = 4);
+
+int point(int x, int y){
+    return x + y;
 }
  
 int main(){
@@ -53,14 +69,24 @@ int main(){
         }
         else{
             // macierzysty
-            signal(SIGUSR1,sig_usr_handler);
-            int x= 0;
-            int pid;
+            // signal(SIGUSR1,sig_usr_handler);
+            // int x= 0;
+            // int pid;
+            // pid_t pid_m = getpid();
+            // printf("macierzysty pid:%d", pid_m);
             memset(&sa, 0, sizeof(sa));
             sa.sa_sigaction = handler;
             sa.sa_flags = SA_SIGINFO | SA_RESTART | SA_NOCLDSTOP;
-            sigaction(SIGCHLD, &sa, NULL);
-            while(1);
+            sigaction(SIGUSR1, &sa, NULL);
+            // kill(childpid, SIGKILL);
+            
+
+            while(1){
+            //     if (int result =waitpid(childpid,&status,WNOHANG)){
+            //     printf("result: %d, status: %d", result, ret);
+            // }
+                printf("liczba: %d", Siema::b);
+            }
             // {
             //     x+=1;
             //     if (x%150000000 == 0){
@@ -69,5 +95,9 @@ int main(){
             // }
         }
     }
+  
+
+  
+
     return 0;
 }

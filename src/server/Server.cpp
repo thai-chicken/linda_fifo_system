@@ -6,6 +6,7 @@ Server::Server()
   this->tuple_container = TupleContainer();
   this->quit = false;
   this->fifo_name = FIFO_MAIN_PATH;
+  this->request_id = 0;
 }
 
 Server::~Server()
@@ -47,6 +48,7 @@ Message Server::get_msg_deserialized(FILE* fd_main)
   msg.pid = msg_deserialized.pid();
   msg.command = msg_deserialized.command();
   msg.msg = msg_deserialized.msg();
+  msg.timeout = msg_deserialized.timeout();
 
   printf("SERVER | Message received: %s and pid received: %d \n", msg.msg.c_str(), msg.pid);
 
@@ -127,7 +129,7 @@ FILE* Server::open_client_fifo(pid_t pid)
   return fd_client;
 }
 
-void Server::send_to_client(std::string msg, std::string command, pid_t pid)
+void Server::send_to_client(std::string msg, std::string command, pid_t pid, int timeout)
 {
   tuples::Message msg_serialized;
   std::string buffer_out;
@@ -137,8 +139,11 @@ void Server::send_to_client(std::string msg, std::string command, pid_t pid)
   msg_serialized.set_pid(int(getpid())); // sends own pid to client
   msg_serialized.set_command(command);
   msg_serialized.set_msg(msg);
+  msg_serialized.set_timeout(timeout);
   msg_serialized.SerializeToString(&buffer_out);
 
+  printf("Coś tam: %s", this->fifo_name.c_str());
+  
   if (fputs(buffer_out.c_str(), fd_client) == EOF)
   {
     perror("SERVER | Error writing to client fifo.");
@@ -189,8 +194,9 @@ void Server::perform_request(Message msg)
       message_to_send.msg = this->tuple_container.get(idx_in_tuple);
       message_to_send.pid = msg.pid;
       message_to_send.command = "return";
+      message_to_send.timeout = msg.timeout;
       printf("PERFORM REQUEST | CREATING NEW THREAD!\n");
-      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid, message_to_send.timeout);
       send_thread.detach();
 
       if (msg.command == "input")
@@ -202,10 +208,46 @@ void Server::perform_request(Message msg)
   }
   Request request(msg.msg, msg.pid, msg.command);
   {
+    std::lock_guard<std::mutex> lock(this->mtx_id);
+    request.set_id(this->request_id);
+    this->request_id++;
+  }
+
+  {
     std::lock_guard<std::mutex> lock(this->mtx_request);
     this->request_container.add(request);
   }
+
+  printf("requestId: %d",request.get_id());
+  std::thread timeout_thread(&Server::perform_timeout, this, request.get_id(), message_to_send.timeout);
+  timeout_thread.detach();
+
   return;
+}
+
+void Server::perform_timeout(int request_id, int timeout)
+{
+  Message message_to_send;
+  pid_t client_pid;
+  sleep(timeout);
+  
+  {
+  std::lock_guard<std::mutex> lock(this->mtx_request);
+  if(int idx_in_req = this->request_container.find_id(request_id) != -1){
+      
+    this->request_container.remove(idx_in_req);
+    client_pid = this->request_container.get(idx_in_req).get_request_pid();
+
+    message_to_send.msg = "timeout";
+    message_to_send.pid = client_pid;
+    message_to_send.command = "return";
+    message_to_send.timeout = timeout;
+
+    std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid, message_to_send.timeout);
+    send_thread.detach();
+  }
+
+  }
 }
 
 void Server::perform_tuple(Message msg)
@@ -220,12 +262,14 @@ void Server::perform_tuple(Message msg)
       message_to_send.msg = msg.msg;
       message_to_send.pid = this->request_container.get(idx_in_req).get_request_pid();
       message_to_send.command = "return";
+      message_to_send.timeout = 0;
+
       printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
 
       command = this->request_container.get(idx_in_req).get_command();
       this->request_container.remove(idx_in_req);
 
-      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid, message_to_send.timeout);
       send_thread.detach();
     }
   }
@@ -237,3 +281,30 @@ void Server::perform_tuple(Message msg)
     }
   }
 }
+
+// void Server::handler(int sig, siginfo_t *si, void *uap)
+// {
+//   Message message_to_send;
+//   pid_t client_pid;
+//   if(int idx_in_req = this->request_container.find_pid(si->si_pid) != -1){
+    
+//     this->request_container.remove(idx_in_req);
+//     client_pid = this->request_container.get(idx_in_req).get_request_pid();
+
+//     message_to_send.msg = "timeout";
+//     message_to_send.pid = client_pid;
+//     message_to_send.command = "return";
+//     message_to_send.timeout = 0;
+
+//     std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid, message_to_send.timeout);
+//     send_thread.detach();
+
+//   }
+
+//   waitpid(si->si_pid, NULL, 0);
+// }
+
+// void Server::sig_handler(int signum){
+//     pid_t ppid = getppid();
+//     kill(ppid, SIGUSR1);
+// }

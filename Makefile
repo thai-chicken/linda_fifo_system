@@ -22,7 +22,7 @@ client: client.o
 	$(CXX) src/main_client.cpp src/common/tuples.pb.cc bin/client.o `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/client -I .
 
 server: server.o
-	$(CXX) src/main_server.cpp bin/request.o bin/requestcontainer.o bin/tuplecontainer.o  bin/server.o src/common/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -o bin/server -I .
+	$(CXX) src/main_server.cpp bin/request.o bin/requestcontainer.o bin/tuplecontainer.o  bin/server.o src/common/tuples.pb.cc `pkg-config --cflags --libs protobuf` -std=c++11 -pthread -o bin/server -I .
 
 clean:
 	rm bin/client bin/servers

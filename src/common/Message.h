@@ -9,6 +9,7 @@ struct Message
   pid_t pid;
   std::string command;
   std::string msg;
+  int timeout=0;
 };
 
 #endif // MESSAGE_H

@@ -6,4 +6,5 @@ message Message {
 	required int32 pid = 1;
 	required string command = 2;
 	required string msg = 3;
+	required int32 timeout = 4;
 }

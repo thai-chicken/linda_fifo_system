@@ -17,7 +17,7 @@ RequestContainer::~RequestContainer()
 
 void RequestContainer::add(const Request request)
 {
-  requests.push_back(new Request(request.get_request(), request.get_request_pid(), request.get_timeout_pid(), request.get_command()));
+  requests.push_back(new Request(request.get_id(), request.get_request(), request.get_request_pid(), request.get_command()));
 }
 
 Request RequestContainer::get(int index) const
@@ -69,7 +69,7 @@ void RequestContainer::show_elems() const
     for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
     {
       std::cout << "Request: " << (*it)->get_request() << " | Client_pid: " << (*it)->get_request_pid()
-                << " | Timeout_pid: " << (*it)->get_timeout_pid() << " | Command: " << (*it)->get_command() << std::endl;
+                << " | Id: " << (*it)->get_id() << " | Command: " << (*it)->get_command() << std::endl;
     }
   }
   else
@@ -93,6 +93,20 @@ int RequestContainer::find(std::string request) const
   for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
     if ((*it)->get_request() == request)
+    {
+      return i;
+    }
+    i++;
+  }
+  return -1;
+}
+
+int RequestContainer::find_id(long request_id) const
+{
+  int i = 0;
+  for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
+  {
+    if ((*it)->get_id() == request_id)
     {
       return i;
     }

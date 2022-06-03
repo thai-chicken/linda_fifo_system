@@ -92,6 +92,8 @@ void Client::receive_msg()
 {
   tuples::Message msg_serialized;
   Message msg;
+
+  // tu może być jakiś problem jakby co że ten msg size po dodaniu timeout nie wystarcza
   char buffer_in[MSG_SIZE];
 
   this->create_fifo();
@@ -113,7 +115,7 @@ void Client::receive_msg()
   this->destroy_own_fifo();
 }
 
-void Client::send_msg(std::string msg, std::string cmd)
+void Client::send_msg(std::string msg, std::string cmd, int timeout)
 {
   tuples::Message msg_serialized;
   std::string buffer;
@@ -122,6 +124,7 @@ void Client::send_msg(std::string msg, std::string cmd)
   msg_serialized.set_pid(int(getpid()));
   msg_serialized.set_msg(msg);
   msg_serialized.set_command(cmd);
+  msg_serialized.set_timeout(timeout);
   msg_serialized.SerializeToString(&buffer);
 
   fd_main = open_main_fifo();
@@ -133,9 +136,9 @@ void Client::send_msg(std::string msg, std::string cmd)
   this->close_main_fifo(fd_main);
 }
 
-void Client::action(std::string msg, std::string cmd)
+void Client::action(std::string msg, std::string cmd, int timeout)
 {
-  this->send_msg(msg, cmd);
+  this->send_msg(msg, cmd, timeout);
   boost::algorithm::to_lower(cmd);
   if (cmd == "input" || cmd == "read")
   {

@@ -14,79 +14,86 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
+
+PROTOBUF_PRAGMA_INIT_SEG
+
+namespace _pb = ::PROTOBUF_NAMESPACE_ID;
+namespace _pbi = _pb::internal;
+
 namespace tuples {
-class MessageDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Message> _instance;
-} _Message_default_instance_;
+PROTOBUF_CONSTEXPR Message::Message(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_._has_bits_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.command_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.msg_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.pid_)*/0
+  , /*decltype(_impl_.timeout_)*/0} {}
+struct MessageDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MessageDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MessageDefaultTypeInternal() {}
+  union {
+    Message _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MessageDefaultTypeInternal _Message_default_instance_;
 }  // namespace tuples
-static void InitDefaultsscc_info_Message_tuples_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
+static ::_pb::Metadata file_level_metadata_tuples_2eproto[1];
+static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_tuples_2eproto = nullptr;
+static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_tuples_2eproto = nullptr;
 
-  {
-    void* ptr = &::tuples::_Message_default_instance_;
-    new (ptr) ::tuples::Message();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::tuples::Message::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Message_tuples_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Message_tuples_2eproto}, {}};
-
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_tuples_2eproto[1];
-static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_tuples_2eproto = nullptr;
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_tuples_2eproto = nullptr;
-
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_tuples_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::tuples::Message, _has_bits_),
+const uint32_t TableStruct_tuples_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::tuples::Message, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::tuples::Message, pid_),
-  PROTOBUF_FIELD_OFFSET(::tuples::Message, command_),
-  PROTOBUF_FIELD_OFFSET(::tuples::Message, msg_),
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, _impl_.pid_),
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, _impl_.command_),
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, _impl_.msg_),
+  PROTOBUF_FIELD_OFFSET(::tuples::Message, _impl_.timeout_),
   2,
   0,
   1,
+  3,
 };
-static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 8, sizeof(::tuples::Message)},
+static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  { 0, 10, -1, sizeof(::tuples::Message)},
 };
 
-static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::tuples::_Message_default_instance_),
+static const ::_pb::Message* const file_default_instances[] = {
+  &::tuples::_Message_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_tuples_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014tuples.proto\022\006tuples\"4\n\007Message\022\013\n\003pid"
-  "\030\001 \002(\005\022\017\n\007command\030\002 \002(\t\022\013\n\003msg\030\003 \002(\t"
+  "\n\014tuples.proto\022\006tuples\"E\n\007Message\022\013\n\003pid"
+  "\030\001 \002(\005\022\017\n\007command\030\002 \002(\t\022\013\n\003msg\030\003 \002(\t\022\017\n\007"
+  "timeout\030\004 \002(\005"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_tuples_2eproto_deps[1] = {
+static ::_pbi::once_flag descriptor_table_tuples_2eproto_once;
+const ::_pbi::DescriptorTable descriptor_table_tuples_2eproto = {
+    false, false, 93, descriptor_table_protodef_tuples_2eproto,
+    "tuples.proto",
+    &descriptor_table_tuples_2eproto_once, nullptr, 0, 1,
+    schemas, file_default_instances, TableStruct_tuples_2eproto::offsets,
+    file_level_metadata_tuples_2eproto, file_level_enum_descriptors_tuples_2eproto,
+    file_level_service_descriptors_tuples_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_tuples_2eproto_sccs[1] = {
-  &scc_info_Message_tuples_2eproto.base,
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_tuples_2eproto_once;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_tuples_2eproto = {
-  false, false, descriptor_table_protodef_tuples_2eproto, "tuples.proto", 76,
-  &descriptor_table_tuples_2eproto_once, descriptor_table_tuples_2eproto_sccs, descriptor_table_tuples_2eproto_deps, 1, 0,
-  schemas, file_default_instances, TableStruct_tuples_2eproto::offsets,
-  file_level_metadata_tuples_2eproto, 1, file_level_enum_descriptors_tuples_2eproto, file_level_service_descriptors_tuples_2eproto,
-};
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_tuples_2eproto_getter() {
+  return &descriptor_table_tuples_2eproto;
+}
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_tuples_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_tuples_2eproto)), true);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_tuples_2eproto(&descriptor_table_tuples_2eproto);
 namespace tuples {
 
 // ===================================================================
 
-void Message::InitAsDefaultInstance() {
-}
 class Message::_Internal {
  public:
-  using HasBits = decltype(std::declval<Message>()._has_bits_);
+  using HasBits = decltype(std::declval<Message>()._impl_._has_bits_);
   static void set_has_pid(HasBits* has_bits) {
     (*has_bits)[0] |= 4u;
   }
@@ -96,162 +103,203 @@ class Message::_Internal {
   static void set_has_msg(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
+  static void set_has_timeout(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
   static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000007) ^ 0x00000007) != 0;
+    return ((has_bits[0] & 0x0000000f) ^ 0x0000000f) != 0;
   }
 };
 
-Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
-  SharedCtor();
-  RegisterArenaDtor(arena);
+Message::Message(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:tuples.Message)
 }
 Message::Message(const Message& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _has_bits_(from._has_bits_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Message* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){from._impl_._has_bits_}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.command_){}
+    , decltype(_impl_.msg_){}
+    , decltype(_impl_.pid_){}
+    , decltype(_impl_.timeout_){}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _impl_.command_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.command_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_command()) {
-    command_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_command(),
-      GetArena());
+    _this->_impl_.command_.Set(from._internal_command(), 
+      _this->GetArenaForAllocation());
   }
-  msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _impl_.msg_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.msg_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (from._internal_has_msg()) {
-    msg_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_msg(),
-      GetArena());
+    _this->_impl_.msg_.Set(from._internal_msg(), 
+      _this->GetArenaForAllocation());
   }
-  pid_ = from.pid_;
+  ::memcpy(&_impl_.pid_, &from._impl_.pid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.timeout_) -
+    reinterpret_cast<char*>(&_impl_.pid_)) + sizeof(_impl_.timeout_));
   // @@protoc_insertion_point(copy_constructor:tuples.Message)
 }
 
-void Message::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Message_tuples_2eproto.base);
-  command_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  pid_ = 0;
+inline void Message::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_._has_bits_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.command_){}
+    , decltype(_impl_.msg_){}
+    , decltype(_impl_.pid_){0}
+    , decltype(_impl_.timeout_){0}
+  };
+  _impl_.command_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.command_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.msg_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.msg_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Message::~Message() {
   // @@protoc_insertion_point(destructor:tuples.Message)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-void Message::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
-  command_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  msg_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+inline void Message::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.command_.Destroy();
+  _impl_.msg_.Destroy();
 }
 
-void Message::ArenaDtor(void* object) {
-  Message* _this = reinterpret_cast< Message* >(object);
-  (void)_this;
-}
-void Message::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void Message::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
-const Message& Message::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Message_tuples_2eproto.base);
-  return *internal_default_instance();
-}
-
 
 void Message::Clear() {
 // @@protoc_insertion_point(message_clear_start:tuples.Message)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _has_bits_[0];
+  cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
-      command_.ClearNonDefaultToEmpty();
+      _impl_.command_.ClearNonDefaultToEmpty();
     }
     if (cached_has_bits & 0x00000002u) {
-      msg_.ClearNonDefaultToEmpty();
+      _impl_.msg_.ClearNonDefaultToEmpty();
     }
   }
-  pid_ = 0;
-  _has_bits_.Clear();
+  if (cached_has_bits & 0x0000000cu) {
+    ::memset(&_impl_.pid_, 0, static_cast<size_t>(
+        reinterpret_cast<char*>(&_impl_.timeout_) -
+        reinterpret_cast<char*>(&_impl_.pid_)) + sizeof(_impl_.timeout_));
+  }
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* Message::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* Message::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
   while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
       // required int32 pid = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
           _Internal::set_has_pid(&has_bits);
-          pid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.pid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
-        } else goto handle_unusual;
+        } else
+          goto handle_unusual;
         continue;
       // required string command = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_command();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          #ifndef NDEBUG
-          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "tuples.Message.command");
-          #endif  // !NDEBUG
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          #ifndef NDEBUG
+          ::_pbi::VerifyUTF8(str, "tuples.Message.command");
+          #endif  // !NDEBUG
+        } else
+          goto handle_unusual;
         continue;
       // required string msg = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_msg();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          #ifndef NDEBUG
-          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "tuples.Message.msg");
-          #endif  // !NDEBUG
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-        } else goto handle_unusual;
+          #ifndef NDEBUG
+          ::_pbi::VerifyUTF8(str, "tuples.Message.msg");
+          #endif  // !NDEBUG
+        } else
+          goto handle_unusual;
         continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
+      // required int32 timeout = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _Internal::set_has_timeout(&has_bits);
+          _impl_.timeout_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
         continue;
-      }
+      default:
+        goto handle_unusual;
     }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
   }  // while
-success:
-  _has_bits_.Or(has_bits);
+message_done:
+  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
-  goto success;
+  goto message_done;
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Message::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+uint8_t* Message::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:tuples.Message)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = _has_bits_[0];
+  cached_has_bits = _impl_._has_bits_[0];
   // required int32 pid = 1;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_pid(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(1, this->_internal_pid(), target);
   }
 
   // required string command = 2;
@@ -274,8 +322,14 @@ failure:
         3, this->_internal_msg(), target);
   }
 
+  // required int32 timeout = 4;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(4, this->_internal_timeout(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tuples.Message)
@@ -302,9 +356,12 @@ size_t Message::RequiredFieldsByteSizeFallback() const {
 
   if (_internal_has_pid()) {
     // required int32 pid = 1;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_pid());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_pid());
+  }
+
+  if (_internal_has_timeout()) {
+    // required int32 timeout = 4;
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_timeout());
   }
 
   return total_size;
@@ -313,7 +370,7 @@ size_t Message::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:tuples.Message)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+  if (((_impl_._has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
     // required string command = 2;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
@@ -325,68 +382,53 @@ size_t Message::ByteSizeLong() const {
         this->_internal_msg());
 
     // required int32 pid = 1;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_pid());
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_pid());
+
+    // required int32 timeout = 4;
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_timeout());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-void Message::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:tuples.Message)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Message* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Message>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tuples.Message)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:tuples.Message)
-    MergeFrom(*source);
-  }
-}
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Message::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    Message::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Message::GetClassData() const { return &_class_data_; }
 
-void Message::MergeFrom(const Message& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:tuples.Message)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+
+void Message::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Message*>(&to_msg);
+  auto& from = static_cast<const Message&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:tuples.Message)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
     if (cached_has_bits & 0x00000001u) {
-      _internal_set_command(from._internal_command());
+      _this->_internal_set_command(from._internal_command());
     }
     if (cached_has_bits & 0x00000002u) {
-      _internal_set_msg(from._internal_msg());
+      _this->_internal_set_msg(from._internal_msg());
     }
     if (cached_has_bits & 0x00000004u) {
-      pid_ = from.pid_;
+      _this->_impl_.pid_ = from._impl_.pid_;
     }
-    _has_bits_[0] |= cached_has_bits;
+    if (cached_has_bits & 0x00000008u) {
+      _this->_impl_.timeout_ = from._impl_.timeout_;
+    }
+    _this->_impl_._has_bits_[0] |= cached_has_bits;
   }
-}
-
-void Message::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:tuples.Message)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Message::CopyFrom(const Message& from) {
@@ -397,28 +439,43 @@ void Message::CopyFrom(const Message& from) {
 }
 
 bool Message::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if (_Internal::MissingRequiredFields(_impl_._has_bits_)) return false;
   return true;
 }
 
 void Message::InternalSwap(Message* other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  swap(_has_bits_[0], other->_has_bits_[0]);
-  command_.Swap(&other->command_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  msg_.Swap(&other->msg_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  swap(pid_, other->pid_);
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.command_, lhs_arena,
+      &other->_impl_.command_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.msg_, lhs_arena,
+      &other->_impl_.msg_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Message, _impl_.timeout_)
+      + sizeof(Message::_impl_.timeout_)
+      - PROTOBUF_FIELD_OFFSET(Message, _impl_.pid_)>(
+          reinterpret_cast<char*>(&_impl_.pid_),
+          reinterpret_cast<char*>(&other->_impl_.pid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Message::GetMetadata() const {
-  return GetMetadataStatic();
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_tuples_2eproto_getter, &descriptor_table_tuples_2eproto_once,
+      file_level_metadata_tuples_2eproto[0]);
 }
-
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace tuples
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::tuples::Message* Arena::CreateMaybeMessage< ::tuples::Message >(Arena* arena) {
+template<> PROTOBUF_NOINLINE ::tuples::Message*
+Arena::CreateMaybeMessage< ::tuples::Message >(Arena* arena) {
   return Arena::CreateMessageInternal< ::tuples::Message >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE

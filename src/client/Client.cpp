@@ -105,6 +105,8 @@ void Client::receive_msg()
     exit(1);
   }
 
+  printf("blinowski");
+
   msg_serialized.ParseFromString(buffer_in);
   msg.pid = msg_serialized.pid();
   msg.msg = msg_serialized.msg();

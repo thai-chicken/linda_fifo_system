@@ -18,7 +18,7 @@ class RequestContainer
   void show_elems() const;
   void clear();
   int find(std::string request) const;
-  int find_id(long request_id) const;
+  int find_id(int request_id) const;
 
   private:
   std::list<Request*> requests;

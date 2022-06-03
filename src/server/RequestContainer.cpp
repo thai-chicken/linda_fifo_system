@@ -101,7 +101,7 @@ int RequestContainer::find(std::string request) const
   return -1;
 }
 
-int RequestContainer::find_id(long request_id) const
+int RequestContainer::find_id(int request_id) const
 {
   int i = 0;
   for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)

@@ -142,7 +142,7 @@ void Server::send_to_client(std::string msg, std::string command, pid_t pid, int
   msg_serialized.set_timeout(timeout);
   msg_serialized.SerializeToString(&buffer_out);
 
-  printf("Coś tam: %s", this->fifo_name.c_str());
+  printf("Coś tam: %d", pid);
   
   if (fputs(buffer_out.c_str(), fd_client) == EOF)
   {
@@ -218,8 +218,7 @@ void Server::perform_request(Message msg)
     this->request_container.add(request);
   }
 
-  printf("requestId: %d",request.get_id());
-  std::thread timeout_thread(&Server::perform_timeout, this, request.get_id(), message_to_send.timeout);
+  std::thread timeout_thread(&Server::perform_timeout, this, request.get_id(), msg.timeout);
   timeout_thread.detach();
 
   return;
@@ -227,16 +226,17 @@ void Server::perform_request(Message msg)
 
 void Server::perform_timeout(int request_id, int timeout)
 {
+  int idx_in_req;
   Message message_to_send;
   pid_t client_pid;
   sleep(timeout);
   
   {
   std::lock_guard<std::mutex> lock(this->mtx_request);
-  if(int idx_in_req = this->request_container.find_id(request_id) != -1){
+  if((idx_in_req = this->request_container.find_id(request_id)) != -1){
       
-    this->request_container.remove(idx_in_req);
     client_pid = this->request_container.get(idx_in_req).get_request_pid();
+    this->request_container.remove(idx_in_req);
 
     message_to_send.msg = "timeout";
     message_to_send.pid = client_pid;

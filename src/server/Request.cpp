@@ -17,6 +17,7 @@ Request::Request(std::string request_tuple, pid_t request_pid, std::string comma
 
 Request::Request(int request_id, std::string request_tuple, pid_t request_pid, std::string command)
 {
+  this->request_id = request_id;
   this->request_tuple = request_tuple;
   this->request_pid = request_pid;
   this->command = command;

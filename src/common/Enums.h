@@ -8,6 +8,11 @@ enum ElemType {
     EMPTY
 };
 
+enum MessageType {
+    TUPLE,
+    PATTERN
+};
+
 enum Command {
     INPUT,
     OUTPUT,

@@ -15,9 +15,9 @@ RequestContainer::~RequestContainer()
   }
 }
 
-void RequestContainer::add(const Request request)
+void RequestContainer::add(Request request)
 {
-  requests.push_back(new Request(request.get_request(), request.get_request_pid(), request.get_timeout_pid(), request.get_command()));
+  requests.push_back(new Request(request.getMessage()));
 }
 
 Request RequestContainer::get(int index) const
@@ -50,11 +50,11 @@ int RequestContainer::size() const
   return requests.size();
 }
 
-bool RequestContainer::is_in(const Request request) const
+bool RequestContainer::is_in(Request request) const
 {
   for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
-    if ((*it)->get_request() == request.get_request())
+    if ((*it)->getMessage()->getTuplePattern() == request.getMessage()->getTuplePattern())
     {
       return true;
     }
@@ -68,8 +68,7 @@ void RequestContainer::show_elems() const
   {
     for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
     {
-      std::cout << "Request: " << (*it)->get_request() << " | Client_pid: " << (*it)->get_request_pid()
-                << " | Timeout_pid: " << (*it)->get_timeout_pid() << " | Command: " << (*it)->get_command() << std::endl;
+      std::cout << "Request: " << (*it)->getMessage()->getTuplePattern() << std::endl;
     }
   }
   else
@@ -87,12 +86,12 @@ void RequestContainer::clear()
   requests.clear();
 }
 
-int RequestContainer::find(std::string request) const
+int RequestContainer::find(TuplePatternMessage* msg) const
 {
   int i = 0;
   for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
-    if ((*it)->get_request() == request)
+    if ((*it)->getMessage()->getTuplePattern() == msg->getTuplePattern())
     {
       return i;
     }

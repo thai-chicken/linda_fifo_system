@@ -2,6 +2,7 @@
 #define REQUESTCONTAINER_H
 
 #include "Request.h"
+#include "../common/TuplePatternMessage.h"
 
 #include <list>
 
@@ -17,7 +18,7 @@ class RequestContainer
   bool is_in(const Request request) const;
   void show_elems() const;
   void clear();
-  int find(std::string request) const;
+  int find(TuplePatternMessage* msg) const;
 
   private:
   std::list<Request*> requests;

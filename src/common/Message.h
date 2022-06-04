@@ -2,13 +2,30 @@
 #define MESSAGE_H
 
 #include <string>
-#define MSG_SIZE 80
+#include "Constants.h"
+#include "Enums.h"
+// #define MSG_SIZE 80
 
-struct Message
+// Sama wiadomosc zajmowac bedzie 7B
+class Message
 {
+private:
   pid_t pid;
-  std::string command;
-  std::string msg;
+  Command cmd;
+  MessageType type;
+public:
+  Message() {};
+  virtual ~Message() {};
+  pid_t getPid();
+  Command getCommand();
+  MessageType getType();
+  void setPid(pid_t p);
+  void setCommand(Command cmd);
+  void setType(MessageType t);
+
+  virtual std::string serialize() = 0;
+  virtual void deserialize(std::string serialized) = 0;
+
 };
 
 #endif // MESSAGE_H

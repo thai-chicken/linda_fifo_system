@@ -90,9 +90,9 @@ void Client::close_own_fifo(FILE* fd_own_fifo)
 
 void Client::receive_msg()
 {
-  tuples::Message msg_serialized;
-  Message msg;
-  char buffer_in[MSG_SIZE];
+  // tuples::Message msg_serialized;
+  Message* msg;
+  char buffer_in[MESSAGE_SIZE];
 
   this->create_fifo();
   FILE* fd_client = open_own_fifo();
@@ -103,26 +103,47 @@ void Client::receive_msg()
     exit(1);
   }
 
-  msg_serialized.ParseFromString(buffer_in);
-  msg.pid = msg_serialized.pid();
-  msg.msg = msg_serialized.msg();
-  msg.command = msg_serialized.command();
-  printf("CLIENT | Message received: %s and pid received: %d \n", msg.msg.c_str(), msg.pid);
+  // Wlatuje sobie przykładowy string - 1234511
+  // Odczytuję wartość na 6tym indeksie i w zależności od wartości deserializuję
+  // switch (type)
+  // {
+  // case MessageType::TUPLE:
+  //   msg = TupleMessage();
+  //   break;
+  
+  // case MessageType::PATTERN:
+  //   msg = TuplePatternMessage();
+  //   break;
+
+  // default:
+  //   break;
+  // }
+  msg->deserialize(buffer_in);
+  // msg.deserialize(buffer_in);
+
+
+  // msg_serialized.ParseFromString(buffer_in);
+  // msg.pid = msg_serialized.pid();
+  // msg.msg = msg_serialized.msg();
+  // msg.command = msg_serialized.command();
+  printf("CLIENT | Message received: %i and pid received: %d \n", msg->getCommand(), msg->getPid());
 
   this->close_own_fifo(fd_client);
   this->destroy_own_fifo();
 }
 
-void Client::send_msg(std::string msg, std::string cmd)
+void Client::send_msg(Message* msg)
 {
-  tuples::Message msg_serialized;
+  // tuples::Message msg_serialized;
   std::string buffer;
   FILE* fd_main;
 
-  msg_serialized.set_pid(int(getpid()));
-  msg_serialized.set_msg(msg);
-  msg_serialized.set_command(cmd);
-  msg_serialized.SerializeToString(&buffer);
+  msg->setPid(int(getpid()));
+  buffer = msg->serialize();
+  // msg_serialized.set_pid(int(getpid()));
+  // msg_serialized.set_msg(msg);
+  // msg_serialized.set_command(cmd);
+  // msg_serialized.SerializeToString(&buffer);
 
   fd_main = open_main_fifo();
   printf("CLIENT | Sending message: %s with size: %lu\n", buffer.c_str(), sizeof(buffer.c_str()));
@@ -133,15 +154,15 @@ void Client::send_msg(std::string msg, std::string cmd)
   this->close_main_fifo(fd_main);
 }
 
-void Client::action(std::string msg, std::string cmd)
+void Client::action(Message* msg)
 {
-  this->send_msg(msg, cmd);
-  boost::algorithm::to_lower(cmd);
-  if (cmd == "input" || cmd == "read")
+  this->send_msg(msg);
+  if (msg->getCommand() == Command::INPUT || msg->getCommand() == Command::READ)
   {
     this->receive_msg();
   }
-  else if (cmd != "exit" && cmd != "quit" && cmd != "output")
+  // else if (cmd != "exit" && cmd != "quit" && cmd != "output")
+  else
   {
     printf("CLIENT | Invalid command.\n");
   }

@@ -14,6 +14,7 @@ Server::~Server()
   this->tuple_container.clear();
 }
 
+// SIE ROBI ES
 FILE* Server::open_main_fifo() const
 {
   FILE* fd_main;
@@ -31,62 +32,78 @@ FILE* Server::open_main_fifo() const
 }
 
 
-Message Server::get_msg_deserialized(FILE* fd_main)
+Message* Server::get_msg_deserialized(FILE* fd_main)
 {
-  Message msg;
-  tuples::Message msg_deserialized;
-  char buffer[MSG_SIZE];
+  // tuples::Message msg_deserialized;
+  char buffer[MESSAGE_SIZE];
 
-  if (fgets(buffer, MSG_SIZE, fd_main) == NULL)
+  if (fgets(buffer, MESSAGE_SIZE, fd_main) == NULL)
   {
     perror("SERVER | Error reading from main fifo.");
     exit(1);
   }
 
-  msg_deserialized.ParseFromString(buffer);
-  msg.pid = msg_deserialized.pid();
-  msg.command = msg_deserialized.command();
-  msg.msg = msg_deserialized.msg();
+  MessageType type = static_cast<MessageType>(buffer[6]);
+  Message* msg;
+  switch (type)
+  {
+  case MessageType::TUPLE:
+    msg = new TupleMessage;
+    break;
+  case MessageType::PATTERN:
+    msg = new TuplePatternMessage;
+    break;
 
-  printf("SERVER | Message received: %s and pid received: %d \n", msg.msg.c_str(), msg.pid);
+  default:
+    break;
+  }
+  std::cout << "buffer: " << buffer << std::endl;
+  msg->deserialize(buffer);
+  // msg_deserialized.ParseFromString(buffer);
+  // msg.pid = msg_deserialized.pid();
+  // msg.command = msg_deserialized.command();
+  // msg.msg = msg_deserialized.msg();
 
+  printf("SERVER | Message received: %i and pid received: %d \n", msg->getCommand(), msg->getPid());
+  
   return msg;
 }
 
-void Server::handle_msg(Message msg_in)
-{
-  boost::algorithm::to_lower(msg_in.command);
-  if ((msg_in.command == "input") || (msg_in.command == "read"))
-  {
-    this->perform_request(msg_in);
-  }
-  else if (msg_in.command == "output")
-  {
-    this->perform_tuple(msg_in);
-  }
-  else if (msg_in.command == "exit" || msg_in.command == "quit")
-  {
-    printf("SERVER | Received exit command.\n");
-    this->quit = true;
-  }
-  else
-  {
-    printf("SERVER | Unknown command: %s\n", msg_in.command.c_str());
-  }
-}
+//TODO: Trzeba zrobić, da się radę ;)
+// void Server::handle_msg(Message* msg_in)
+// {
+//   // boost::algorithm::to_lower(msg_in.command);
+//   if ((msg_in->getCommand() == Command::INPUT) || (msg_in->getCommand() == Command::READ))
+//   {
+//     this->perform_request(msg_in);
+//   }
+//   else if (msg_in->getCommand() == Command::OUTPUT)
+//   {
+//     this->perform_tuple(msg_in);
+//   }
+//   // else if (msg_in.command == "exit" || msg_in.command == "quit")
+//   // {
+//   //   printf("SERVER | Received exit command.\n");
+//   //   this->quit = true;
+//   // }
+//   else
+//   {
+//     printf("SERVER | Unknown command: %i\n", msg_in->getCommand());
+//   }
+// }
 
 void Server::handle_requests()
 {
   int msg_sz;
   FILE* fd_main;
-  Message msg_in;
-  char buffer[MSG_SIZE];
+  Message* msg_in;
+  char buffer[MESSAGE_SIZE];
 
   while (!this->quit)
   {
     fd_main = this->open_main_fifo();
     msg_in = this->get_msg_deserialized(fd_main);
-    this->handle_msg(msg_in);
+    // this->handle_msg(msg_in);
     this->show_state();
     // this->send_to_client(msg_in);
     fclose(fd_main);
@@ -127,17 +144,19 @@ FILE* Server::open_client_fifo(pid_t pid)
   return fd_client;
 }
 
-void Server::send_to_client(std::string msg, std::string command, pid_t pid)
+void Server::send_to_client(Message* msg)
 {
-  tuples::Message msg_serialized;
+  // tuples::Message msg_serialized;
   std::string buffer_out;
 
-  FILE* fd_client = open_client_fifo(pid);
+  FILE* fd_client = open_client_fifo(msg->getPid());
 
-  msg_serialized.set_pid(int(getpid())); // sends own pid to client
-  msg_serialized.set_command(command);
-  msg_serialized.set_msg(msg);
-  msg_serialized.SerializeToString(&buffer_out);
+  msg->setPid(int(getpid()));
+  buffer_out = msg->serialize();
+  // msg_serialized.set_pid(int(getpid())); // sends own pid to client
+  // msg_serialized.set_command(command);
+  // msg_serialized.set_msg(msg);
+  // msg_serialized.SerializeToString(&buffer_out);
 
   if (fputs(buffer_out.c_str(), fd_client) == EOF)
   {
@@ -146,7 +165,7 @@ void Server::send_to_client(std::string msg, std::string command, pid_t pid)
   }
   else
   {
-    printf("SERVER | To client sent message: %s with size %lu\n", msg_serialized.msg().c_str(), sizeof(buffer_out));
+    printf("SERVER | To client sent message: %i with size %lu\n", msg->getCommand(), sizeof(buffer_out));
   }
   fflush(fd_client);
 
@@ -178,60 +197,62 @@ void Server::run()
   this->destruct_fifo();
 }
 
-void Server::perform_request(Message msg)
-{
-  int idx_in_tuple;
-  Message message_to_send;
-  {
-    std::lock_guard<std::mutex> lock(this->mtx_tuple);
-    if ((idx_in_tuple = this->tuple_container.find(msg.msg)) != -1)
-    {
-      message_to_send.msg = this->tuple_container.get(idx_in_tuple);
-      message_to_send.pid = msg.pid;
-      message_to_send.command = "return";
-      printf("PERFORM REQUEST | CREATING NEW THREAD!\n");
-      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
-      send_thread.detach();
+//TODO: Ło kurka co to??????
+//EDIT: CO TU SIE KURWA DZIEJE?!?!
+// void Server::perform_request(Message* msg)
+// {
+//   int idx_in_tuple;
+//   Message message_to_send;
+//   {
+//     std::lock_guard<std::mutex> lock(this->mtx_tuple);
+//     if ((idx_in_tuple = this->tuple_container.find(msg.msg)) != -1)
+//     {
+//       message_to_send.msg = this->tuple_container.get(idx_in_tuple);
+//       message_to_send.pid = msg.pid;
+//       message_to_send.command = "return";
+//       printf("PERFORM REQUEST | CREATING NEW THREAD!\n");
+//       std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+//       send_thread.detach();
 
-      if (msg.command == "input")
-      {
-        this->tuple_container.remove(idx_in_tuple);
-      }
-      return;
-    }
-  }
-  Request request(msg.msg, msg.pid, msg.command);
-  {
-    std::lock_guard<std::mutex> lock(this->mtx_request);
-    this->request_container.add(request);
-  }
-  return;
-}
+//       if (msg.command == "input")
+//       {
+//         this->tuple_container.remove(idx_in_tuple);
+//       }
+//       return;
+//     }
+//   }
+//   Request request(msg.msg, msg.pid, msg.command);
+//   {
+//     std::lock_guard<std::mutex> lock(this->mtx_request);
+//     this->request_container.add(request);
+//   }
+//   return;
+// }
 
-void Server::perform_tuple(Message msg)
-{
-  int idx_in_req;
-  Message message_to_send;
-  {
-    std::lock_guard<std::mutex> lock(this->mtx_request);
-    if ((idx_in_req = this->request_container.find(msg.msg)) != -1)
-    {
-      message_to_send.msg = msg.msg;
-      message_to_send.pid = this->request_container.get(idx_in_req).get_request_pid();
-      message_to_send.command = "return";
-      printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
+// void Server::perform_tuple(Message* msg)
+// {
+//   int idx_in_req;
+//   TuplePatternMessage* message_to_send;
+//   {
+//     std::lock_guard<std::mutex> lock(this->mtx_request);
+//     if ((idx_in_req = this->request_container.find(msg)) != -1)
+//     {
+//       message_to_send.msg = msg.msg;
+//       message_to_send.pid = this->request_container.get(idx_in_req).get_request_pid();
+//       message_to_send.command = "return";
+//       printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
 
-      this->request_container.remove(idx_in_req);
+//       this->request_container.remove(idx_in_req);
 
-      std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
-      send_thread.detach();
-    }
-  }
-  {
-    std::lock_guard<std::mutex> lock(this->mtx_tuple);
-    if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).get_command() == "read"))
-    {
-      this->tuple_container.add(msg.msg);
-    }
-  }
-}
+//       std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid);
+//       send_thread.detach();
+//     }
+//   }
+//   {
+//     std::lock_guard<std::mutex> lock(this->mtx_tuple);
+//     if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).get_command() == "read"))
+//     {
+//       this->tuple_container.add(msg.msg);
+//     }
+//   }
+// }

@@ -1,9 +1,9 @@
 #include <iostream>
-#include "../../include/tuple_structures/Tuple.h"
-#include "../../include/tuple_structures/TupleElem.h"
-#include "../../include/tuple_structures/TuplePattern.h"
-#include "../../include/tuple_structures/TuplePatternElem.h"
-#include "../../include/Constants.h"
+#include "Tuple.h"
+#include "TupleElem.h"
+#include "TuplePattern.h"
+#include "TuplePatternElem.h"
+#include "Constants.h"
 
 Tuple createTuple(const std::vector<std::string> values, const std::vector<ElemType> types, int size) 
 {

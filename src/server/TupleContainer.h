@@ -4,23 +4,25 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include "../common/TuplePattern.h"
+#include "../common/Tuple.h"
 
 class TupleContainer
 {
   public:
   TupleContainer();
   ~TupleContainer();
-  void add(const std::string tuple);
-  std::string get(int index) const;
+  void add(Tuple* tuple);
+  Tuple get(int index) const;
   void remove(int index);
   int size() const;
-  bool is_in(const std::string tuple) const;
+  bool is_in(const Tuple* tuple) const;
   void show_elems() const;
   void clear();
-  int find(const std::string tuple) const;
+  int find(TuplePattern* pattern) const;
 
   private:
-  std::list<std::string> tuples;
+  std::list<Tuple*> tuples;
 };
 
 #endif

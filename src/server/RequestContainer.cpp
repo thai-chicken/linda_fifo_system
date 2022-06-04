@@ -86,12 +86,12 @@ void RequestContainer::clear()
   requests.clear();
 }
 
-int RequestContainer::find(TuplePatternMessage* msg) const
+int RequestContainer::find(Tuple* tuple) const
 {
   int i = 0;
   for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
-    if ((*it)->getMessage()->getTuplePattern() == msg->getTuplePattern())
+    if ((*it)->getMessage()->getTuplePattern().matches(*tuple))
     {
       return i;
     }

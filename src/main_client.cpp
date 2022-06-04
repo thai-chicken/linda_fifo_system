@@ -43,15 +43,29 @@ int main(int argc, char const* argv[])
   //   exit(1);
   // }
   // std::string msg = argv[2];
-  // std::string command = argv[1];
-  TupleMessage tupleMessage;
-  tupleMessage.setType(MessageType::TUPLE);
-  Tuple tup1 = createTuple(
-    {"1", "abc", "3.1415", "d", "*"}, 
-    {ElemType::INT, ElemType::STRING, ElemType::FLOAT, ElemType::STRING, ElemType::EMPTY}, 4);
-  tupleMessage.setTuple(tup1);
-  tupleMessage.setCommand(Command::INPUT);
-  Client client = Client();
-  client.action(&tupleMessage);
+  std::string command = argv[1];
+  if(command == "input"){
+    TuplePatternMessage patternMessage;
+    patternMessage.setType(MessageType::PATTERN);
+    TuplePattern tp1 = createTuplePattern(
+        {"1", "*", "*", "d", "*"}, 
+        {ElemType::INT, ElemType::STRING, ElemType::FLOAT, ElemType::STRING, ElemType::EMPTY}, 
+        {MatchCondition::EQUAL, MatchCondition::ANY, MatchCondition::ANY, MatchCondition::EQUAL, MatchCondition::ANY}, 4);
+    patternMessage.setTuplePattern(tp1);
+    patternMessage.setCommand(Command::INPUT);
+    Client client = Client();
+    client.action(&patternMessage);
+  }
+  if(command == "output"){
+    TupleMessage tupleMessage;
+    tupleMessage.setType(MessageType::TUPLE);
+    Tuple tup1 = createTuple(
+        {"1", "abc", "3.1415", "d", "*"}, 
+        {ElemType::INT, ElemType::STRING, ElemType::FLOAT, ElemType::STRING, ElemType::EMPTY}, 4);
+    tupleMessage.setTuple(tup1);
+    tupleMessage.setCommand(Command::OUTPUT);
+    Client client = Client();
+    client.action(&tupleMessage);
+  }
   return 0;
 }

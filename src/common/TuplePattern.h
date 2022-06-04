@@ -8,7 +8,6 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include "TuplePattern.h"
 
 // Wzorzec ma MAX_N_OF_ELEMENTS*(MAX_VALUE_SIZE+1) + 1 bajty
 class TuplePattern

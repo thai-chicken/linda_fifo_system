@@ -161,7 +161,9 @@ void Client::action(Message* msg)
   {
     this->receive_msg();
   }
-  // else if (cmd != "exit" && cmd != "quit" && cmd != "output")
+  // else if (cmd != "exit" && cmd != "quit" && cmd != "output"){
+
+  // }
   else
   {
     printf("CLIENT | Invalid command.\n");

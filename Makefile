@@ -9,7 +9,7 @@ requests.o:
 requestcontainer.o: requests.o src/common/TuplePatternMessage.h
 	$(CXX) -std=c++11 -I . -c src/server/RequestContainer.cpp -o bin/requestcontainer.o
 
-tuplecontainer.o:  
+tuplecontainer.o:  src/common/Tuple.h
 	$(CXX) -std=c++11 -I . -c src/server/TupleContainer.cpp -o bin/tuplecontainer.o
 
 tuple.o: src/common/Constants.h src/common/Enums.h src/common/TupleElem.h
@@ -30,10 +30,10 @@ tuplepatternelem.o: src/common/Constants.h src/common/Enums.h src/common/TupleEl
 tuplepatternmessage.o: src/common/Constants.h src/common/Enums.h src/common/TuplePattern.h
 	$(CXX) -std=c++11 -I . -c src/common/TuplePatternMessage.cpp -o bin/tuplepatternmessage.o
 
-message.o: src/common/Enums.h
+message.o: src/common/Enums.h src/common/Constants.h src/common/TuplePattern.h src/common/Tuple.h
 	$(CXX) -std=c++11 -I . -c src/common/Message.cpp -o bin/message.o
 
-server.o: requestcontainer.o tuplecontainer.o src/common/Message.h
+server.o: requestcontainer.o tuplecontainer.o src/common/Message.h 
 	$(CXX) -std=c++11 -I . -c src/server/Server.cpp -o bin/server.o
 
 client.o: src/common/Message.h src/common/Constants.h src/common/Enums.h src/common/TupleMessage.h src/common/Message.h src/common/TuplePatternMessage.h src/common/TupleElem.h

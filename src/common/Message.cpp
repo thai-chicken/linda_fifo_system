@@ -12,6 +12,7 @@ MessageType Message::getType() {
     return this->type;
 }
 
+
 void Message::setPid(pid_t p) {
     this->pid = p;
 }
@@ -23,6 +24,10 @@ void Message::setCommand(Command cmd) {
 void Message::setType(MessageType t) {
     this->type = t;
 }
+
+
+
+
 
 // std::string Message::serialize() {
 //     std::string serialized;

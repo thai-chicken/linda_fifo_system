@@ -34,8 +34,8 @@ class Server
   bool quit;
 
   void handle_requests();
-  void perform_request(Message* msg);
-  void perform_tuple(Message* msg);
+  void perform_request(TuplePatternMessage* msg);
+  void perform_tuple(TupleMessage* msg);
   FILE* open_main_fifo() const;
   Message* get_msg_deserialized(FILE* fd_main);
   void handle_msg(Message* msg_in);

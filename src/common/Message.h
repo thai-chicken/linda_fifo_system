@@ -4,6 +4,8 @@
 #include <string>
 #include "Constants.h"
 #include "Enums.h"
+#include "TuplePattern.h"
+#include "Tuple.h"
 // #define MSG_SIZE 80
 
 // Sama wiadomosc zajmowac bedzie 7B
@@ -13,6 +15,7 @@ private:
   pid_t pid;
   Command cmd;
   MessageType type;
+
 public:
   Message() {};
   virtual ~Message() {};
@@ -22,6 +25,7 @@ public:
   void setPid(pid_t p);
   void setCommand(Command cmd);
   void setType(MessageType t);
+
 
   virtual std::string serialize() = 0;
   virtual void deserialize(std::string serialized) = 0;

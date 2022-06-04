@@ -12,6 +12,7 @@ private:
 public:
     TupleMessage() {};
     virtual ~TupleMessage() {};
+
     Tuple getTuple();
     void setTuple(Tuple t);
 
@@ -27,11 +28,10 @@ public:
         return serialized;
     };
     virtual void deserialize(std::string serialized) {
-        std::cout << "Widzisz mnie??" << std::endl;
         // Wiadomosc zajmuje 7B
         this->setPid( atoi(serialized.substr(0, PID_MAX_DIGITS).c_str()));
-        this->setType( static_cast<MessageType>(serialized[PID_MAX_DIGITS]));
-        this->setCommand( static_cast<Command>(serialized[PID_MAX_DIGITS+1]));
+        this->setType( static_cast<MessageType>(serialized[PID_MAX_DIGITS]-48));
+        this->setCommand( static_cast<Command>(serialized[PID_MAX_DIGITS+1]-48));
         // Tupla zajmuje MAX_N_OF_ELEMENTS*(MAX_VALUE_SIZE+1) + 1 bajty
         this->tuple.deserialize(serialized.substr(PID_MAX_DIGITS+2, MAX_N_OF_ELEMENTS*(MAX_VALUE_SIZE+1) + 1).c_str());
     };

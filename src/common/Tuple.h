@@ -23,10 +23,11 @@ public:
 
     std::vector<TupleElem> getElements() const {return m_elements;} ;
     std::string serialize() const;
+    void deserialize(std::string serialized);
 
     void setElements(std::vector<TupleElem> v);
     void setSize(int s);
-    void deserialize(std::string serialized);
+
 
     int getSize() {return m_size;};
     friend std::ostream& operator<< (std::ostream& out, const Tuple& tuple);

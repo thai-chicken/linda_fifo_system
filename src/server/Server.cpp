@@ -37,9 +37,19 @@ Message* Server::get_msg_deserialized(FILE* fd_main)
   // tuples::Message msg_deserialized;
   char buffer[MESSAGE_SIZE];
 
+  // TODO: TUTAJ JEST GIGA BUG --> wchodzi do pepoglad
   if (fgets(buffer, MESSAGE_SIZE, fd_main) == NULL)
   {
+    std::cout << feof(fd_main) << std::endl;
+    if (ferror(fd_main) != 0) {
+        std::cout << "cos" << std::endl;
+    }
+    // osiagnieto koniec pliku??
+    if (feof(fd_main) != 0) {
+      std::cout << "pepoglad" << std::endl;
+    }
     perror("SERVER | Error reading from main fifo.");
+    
     exit(1);
   }
 
@@ -155,11 +165,8 @@ void Server::send_to_client(Message* msg)
   // tuples::Message msg_serialized;
   std::string buffer_out;
 
-
   FILE* fd_client = open_client_fifo(msg->getPid());
-
   msg->setPid(int(getpid()));
-
   buffer_out = msg->serialize();
   // msg_serialized.set_pid(int(getpid())); // sends own pid to client
   // msg_serialized.set_command(command);
@@ -241,6 +248,7 @@ void Server::perform_request(TuplePatternMessage* msg)
 void Server::perform_tuple(TupleMessage* msg)
 {
   int idx_in_req;
+  int cmd;
   {
     std::lock_guard<std::mutex> lock(this->mtx_request);
     
@@ -251,7 +259,11 @@ void Server::perform_tuple(TupleMessage* msg)
       // message_to_send.command = "return";
       printf("PERFORM TUPLE | CREATING NEW THREAD!\n");
 
+      pid_t client_pid = this->request_container.get(idx_in_req).getMessage()->getPid();
+      msg->setPid(client_pid);
+      cmd = this->request_container.get(idx_in_req).getMessage()->getCommand(); 
       this->request_container.remove(idx_in_req);
+      std::cout << "WYSYLAMY DO: " << client_pid << std::endl;
 
       std::thread send_thread(&Server::send_to_client, this, msg);
       send_thread.detach();
@@ -259,7 +271,7 @@ void Server::perform_tuple(TupleMessage* msg)
   }
   {
     std::lock_guard<std::mutex> lock(this->mtx_tuple);
-    if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).getMessage()->getCommand() == Command::READ))
+    if ((idx_in_req == -1) || (idx_in_req != -1 && cmd == Command::READ))
     {
       this->tuple_container.add(msg->getTuple());
     }

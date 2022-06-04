@@ -142,7 +142,6 @@ void Server::send_to_client(std::string msg, std::string command, pid_t pid, int
   msg_serialized.set_timeout(timeout);
   msg_serialized.SerializeToString(&buffer_out);
 
-  printf("Coś tam: %d", pid);
   
   if (fputs(buffer_out.c_str(), fd_client) == EOF)
   {
@@ -218,8 +217,10 @@ void Server::perform_request(Message msg)
     this->request_container.add(request);
   }
 
-  std::thread timeout_thread(&Server::perform_timeout, this, request.get_id(), msg.timeout);
-  timeout_thread.detach();
+  if(msg.timeout != 0){
+    std::thread timeout_thread(&Server::perform_timeout, this, request.get_id(), msg.timeout);
+    timeout_thread.detach();
+  }
 
   return;
 }
@@ -281,30 +282,3 @@ void Server::perform_tuple(Message msg)
     }
   }
 }
-
-// void Server::handler(int sig, siginfo_t *si, void *uap)
-// {
-//   Message message_to_send;
-//   pid_t client_pid;
-//   if(int idx_in_req = this->request_container.find_pid(si->si_pid) != -1){
-    
-//     this->request_container.remove(idx_in_req);
-//     client_pid = this->request_container.get(idx_in_req).get_request_pid();
-
-//     message_to_send.msg = "timeout";
-//     message_to_send.pid = client_pid;
-//     message_to_send.command = "return";
-//     message_to_send.timeout = 0;
-
-//     std::thread send_thread(&Server::send_to_client, this, message_to_send.msg, message_to_send.command, message_to_send.pid, message_to_send.timeout);
-//     send_thread.detach();
-
-//   }
-
-//   waitpid(si->si_pid, NULL, 0);
-// }
-
-// void Server::sig_handler(int signum){
-//     pid_t ppid = getppid();
-//     kill(ppid, SIGUSR1);
-// }

@@ -118,7 +118,23 @@ void Client::receive_msg()
   // default:
   //   break;
   // }
+  MessageType type = static_cast<MessageType>((buffer_in[5])-48);
+
+  switch (type)
+  {
+  case MessageType::TUPLE:
+    msg = new TupleMessage;
+    break;
+  case MessageType::PATTERN:
+    msg = new TuplePatternMessage;
+    break;
+
+  default:
+    std::cout << "type: " << type << std::endl;
+    break;
+  }
   msg->deserialize(buffer_in);
+  std::cout << "CZEGO CHCESZ DZIEWCZYNO JA WIEM"<<std::endl;
   // msg.deserialize(buffer_in);
 
 

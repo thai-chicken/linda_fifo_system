@@ -20,7 +20,7 @@ public:
     TuplePattern(std::vector<TuplePatternElem> elements, int size);
     ~TuplePattern();
 
-    bool matches(Tuple& tuple);
+    bool matches(Tuple tuple);
 
     std::string serialize() const;
     void deserialize(std::string serialized);

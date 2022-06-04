@@ -7,7 +7,7 @@ TuplePattern::TuplePattern(std::vector<TuplePatternElem> elements, int size) {
 
 TuplePattern::~TuplePattern(){}
 
-bool TuplePattern::matches(Tuple& tuple) {
+bool TuplePattern::matches(Tuple tuple) {
     if (this->m_size != tuple.getSize()) {
         return false;
     }

@@ -18,10 +18,10 @@ class RequestContainer
   bool is_in(const Request request) const;
   void show_elems() const;
   void clear();
-  int find(Tuple* tuple) const;
+  int find(Tuple tuple) const;
 
   private:
-  std::list<Request*> requests;
+  std::list<Request> requests;
 };
 
 #endif

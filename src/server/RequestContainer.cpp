@@ -9,24 +9,24 @@ RequestContainer::RequestContainer()
 
 RequestContainer::~RequestContainer()
 {
-  for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); ++it)
-  {
-    delete *it;
-  }
+  // for (std::list<Request>::iterator it = requests.begin(); it != requests.end(); ++it)
+  // {
+  //   delete *it;
+  // }
 }
 
 void RequestContainer::add(Request request)
 {
-  requests.push_back(new Request(request.getMessage()));
+  requests.push_back(request);
 }
 
 Request RequestContainer::get(int index) const
 {
   if (requests.size() > index)
   {
-    std::list<Request*>::const_iterator it = requests.begin();
+    std::list<Request>::const_iterator it = requests.begin();
     std::advance(it, index);
-    return *(*it);
+    return (*it);
   }
   else
   {
@@ -38,9 +38,8 @@ void RequestContainer::remove(int index)
 {
   if (requests.size() > index)
   {
-    std::list<Request*>::const_iterator it = requests.begin();
+    std::list<Request>::const_iterator it = requests.begin();
     std::advance(it, index);
-    delete *it;
     requests.erase(it);
   }
 }
@@ -52,9 +51,9 @@ int RequestContainer::size() const
 
 bool RequestContainer::is_in(Request request) const
 {
-  for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
+  for (std::list<Request>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
-    if ((*it)->getMessage()->getTuplePattern() == request.getMessage()->getTuplePattern())
+    if ((*it).getMessage()->getTuplePattern() == request.getMessage()->getTuplePattern())
     {
       return true;
     }
@@ -66,9 +65,9 @@ void RequestContainer::show_elems() const
 {
   if (requests.size() > 0)
   {
-    for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
+    for (std::list<Request>::const_iterator it = requests.begin(); it != requests.end(); ++it)
     {
-      std::cout << "Request: " << (*it)->getMessage()->getTuplePattern() << std::endl;
+      std::cout << "Request: " << (*it).getMessage()->getTuplePattern() << std::endl;
     }
   }
   else
@@ -79,19 +78,19 @@ void RequestContainer::show_elems() const
 
 void RequestContainer::clear()
 {
-  for (std::list<Request*>::iterator it = requests.begin(); it != requests.end(); ++it)
-  {
-    delete *it;
-  }
+  // for (std::list<Request>::iterator it = requests.begin(); it != requests.end(); ++it)
+  // {
+  //   delete *it;
+  // }
   requests.clear();
 }
 
-int RequestContainer::find(Tuple* tuple) const
+int RequestContainer::find(Tuple tuple) const
 {
   int i = 0;
-  for (std::list<Request*>::const_iterator it = requests.begin(); it != requests.end(); ++it)
+  for (std::list<Request>::const_iterator it = requests.begin(); it != requests.end(); ++it)
   {
-    if ((*it)->getMessage()->getTuplePattern().matches(*tuple))
+    if ((*it).getMessage()->getTuplePattern().matches(tuple))
     {
       return i;
     }

@@ -12,11 +12,13 @@ Request::Request(TuplePatternMessage* msg)
   this->msg = msg;
 }
 
-TuplePatternMessage* Request::getMessage() {
+TuplePatternMessage* Request::getMessage() const 
+{
   return this->msg;
 }
 
-void Request::setMessage(TuplePatternMessage* msg) {
+void Request::setMessage(TuplePatternMessage* msg) 
+{
   this->msg = msg;
 }
 

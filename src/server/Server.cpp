@@ -213,8 +213,7 @@ void Server::perform_request(TuplePatternMessage* msg)
   // Message message_to_send;
   {
     std::lock_guard<std::mutex> lock(this->mtx_tuple);
-    TuplePattern pattern = msg->getTuplePattern();
-    if (idx_in_tuple = this->tuple_container.find(&pattern) != -1)
+    if ((idx_in_tuple = this->tuple_container.find(msg->getTuplePattern())) != -1)
     {
       // message_to_send.msg = this->tuple_container.get(idx_in_tuple);
       // message_to_send.pid = msg.pid;
@@ -225,6 +224,7 @@ void Server::perform_request(TuplePatternMessage* msg)
 
       if (msg->getCommand() == Command::INPUT)
       {
+        std::cout <<"USUNIESZ TO?: "<< idx_in_tuple << std::endl;
         this->tuple_container.remove(idx_in_tuple);
       }
       return;
@@ -241,11 +241,10 @@ void Server::perform_request(TuplePatternMessage* msg)
 void Server::perform_tuple(TupleMessage* msg)
 {
   int idx_in_req;
-  Tuple tuple = msg->getTuple();
   {
     std::lock_guard<std::mutex> lock(this->mtx_request);
     
-    if ((idx_in_req = this->request_container.find(&tuple)) != -1)
+    if ((idx_in_req = this->request_container.find(msg->getTuple())) != -1)
     {
       // message_to_send.msg = msg.msg;
       // message_to_send.pid = this->request_container.get(idx_in_req).get_request_pid();
@@ -262,9 +261,7 @@ void Server::perform_tuple(TupleMessage* msg)
     std::lock_guard<std::mutex> lock(this->mtx_tuple);
     if ((idx_in_req == -1) || (idx_in_req != -1 && this->request_container.get(idx_in_req).getMessage()->getCommand() == Command::READ))
     {
-      std::cout << "GDZIE SIE KURWO PATRZYSZ" << tuple << std::endl;
-      Tuple* tup_point = &tuple;
-      this->tuple_container.add(tup_point);
+      this->tuple_container.add(msg->getTuple());
     }
   }
 }

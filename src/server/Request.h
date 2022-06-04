@@ -18,7 +18,7 @@ class Request
   // int get_timeout_pid() const;
   // void set_command(const std::string command);
   // std::string get_command() const;
-  TuplePatternMessage* getMessage();
+  TuplePatternMessage* getMessage() const;
   void setMessage(TuplePatternMessage* m);
 
   private:

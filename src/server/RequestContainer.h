@@ -19,6 +19,7 @@ class RequestContainer
   void show_elems() const;
   void clear();
   int find(Tuple tuple) const;
+  int find_id(int request_id) const;
 
   private:
   std::list<Request> requests;

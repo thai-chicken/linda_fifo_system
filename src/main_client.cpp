@@ -53,6 +53,7 @@ int main(int argc, char const* argv[])
         {MatchCondition::EQUAL, MatchCondition::ANY, MatchCondition::ANY, MatchCondition::EQUAL, MatchCondition::ANY}, 4);
     patternMessage.setTuplePattern(tp1);
     patternMessage.setCommand(Command::INPUT);
+    patternMessage.setTimeout(9);
     Client client = Client();
     client.action(&patternMessage);
   }

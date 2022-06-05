@@ -44,6 +44,7 @@ class Server
   void handle_msg(Message* msg_in);
   void create_main_fifo();
   void send_to_client(Message* msg);
+  void perform_timeout(int request_id, Message* msg);
 
   static FILE* open_client_fifo(pid_t pid);
   static void destruct_fifo();

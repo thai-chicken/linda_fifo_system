@@ -98,3 +98,17 @@ int RequestContainer::find(Tuple tuple) const
   }
   return -1;
 }
+
+int RequestContainer::find_id(int request_id) const
+{
+  int i = 0;
+  for (std::list<Request>::const_iterator it = requests.begin(); it != requests.end(); ++it)
+  {
+    if ((*it).getId() == request_id)
+    {
+      return i;
+    }
+    i++;
+  }
+  return -1;
+}

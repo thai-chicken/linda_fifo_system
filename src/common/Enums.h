@@ -16,7 +16,8 @@ enum MessageType {
 enum Command {
     INPUT,
     OUTPUT,
-    READ
+    READ,
+    TIMEOUT
 };
 
 enum MatchCondition {

@@ -15,7 +15,7 @@ private:
   pid_t pid;
   Command cmd;
   MessageType type;
-  int timeout;
+  int timeout=0;
 
 public:
   Message() {};

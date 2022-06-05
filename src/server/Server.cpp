@@ -72,6 +72,8 @@ Message* Server::get_msg_deserialized(FILE* fd_main)
   
 
   msg->deserialize(buffer);
+
+  std::cout << "TIMEOUCIK1: " << msg->getTimeout() <<std::endl;
   // msg_deserialized.ParseFromString(buffer);
   // msg.pid = msg_deserialized.pid();
   // msg.command = msg_deserialized.command();
@@ -237,10 +239,40 @@ void Server::perform_request(TuplePatternMessage* msg)
   }
   Request request(msg);
   {
+    std::lock_guard<std::mutex> lock(this->mtx_id);
+    request.setId(this->request_id);
+    this->increment_id();
+  }
+  {
     std::lock_guard<std::mutex> lock(this->mtx_request);
     this->request_container.add(request);
   }
+
+  if(msg->getTimeout() > 0)
+  {
+    std::thread timeout_thread(&Server::perform_timeout, this, request.getId(), msg);
+    timeout_thread.detach();
+  }
+
   return;
+}
+
+void Server::perform_timeout(int request_id, Message* msg)
+{
+  int idx_in_req;
+  sleep(msg->getTimeout());
+  {
+    std::lock_guard<std::mutex> lock(this->mtx_request);
+    if((idx_in_req = this->request_container.find_id(request_id)) != -1){
+      this->request_container.remove(idx_in_req);
+      msg->setCommand(Command::TIMEOUT);
+      std::cout << "TIMEOUCIK2: " << msg->getTimeout() <<std::endl;
+      std::thread send_thread(&Server::send_to_client, this, msg);
+      send_thread.detach();
+
+    }
+  }
+
 }
 
 void Server::perform_tuple(TupleMessage* msg)

@@ -8,23 +8,26 @@
 #include "Tuple.h"
 // #define MSG_SIZE 80
 
-// Sama wiadomosc zajmowac bedzie 7B
+// Sama wiadomosc zajmowac bedzie 7B + int to 11?
 class Message
 {
 private:
   pid_t pid;
   Command cmd;
   MessageType type;
+  int timeout;
 
 public:
   Message() {};
   virtual ~Message() {};
-  pid_t getPid();
-  Command getCommand();
-  MessageType getType();
+  pid_t getPid() const;
+  Command getCommand() const;
+  MessageType getType() const;
+  int getTimeout() const;
   void setPid(pid_t p);
   void setCommand(Command cmd);
   void setType(MessageType t);
+  void setTimeout(int timeout);
 
 
   virtual std::string serialize() = 0;

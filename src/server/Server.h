@@ -29,10 +29,13 @@ class Server
   TupleContainer tuple_container;
   std::mutex mtx_request; // mutex controlling access to request_container
   std::mutex mtx_tuple; // mutex controlling access to tuple_container
+  std::mutex mtx_id; //mutex controlling access to request_id
 
   std::string fifo_name;
   bool quit;
+  int request_id;
 
+  void increment_id() {this->request_id++;};
   void handle_requests();
   void perform_request(TuplePatternMessage* msg);
   void perform_tuple(TupleMessage* msg);

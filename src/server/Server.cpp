@@ -6,6 +6,7 @@ Server::Server()
   this->tuple_container = TupleContainer();
   this->quit = false;
   this->fifo_name = FIFO_MAIN_PATH;
+  this->request_id = 0;
 }
 
 Server::~Server()
@@ -68,10 +69,8 @@ Message* Server::get_msg_deserialized(FILE* fd_main)
     std::cout << "type: " << type << std::endl;
     break;
   }
-  std::cout << "buffer: " << buffer << std::endl;
   
 
-  // MOIM ZDANIEM TODO JEST LECENIE W CHUJA
   msg->deserialize(buffer);
   // msg_deserialized.ParseFromString(buffer);
   // msg.pid = msg_deserialized.pid();
@@ -231,7 +230,6 @@ void Server::perform_request(TuplePatternMessage* msg)
 
       if (msg->getCommand() == Command::INPUT)
       {
-        std::cout <<"USUNIESZ TO?: "<< idx_in_tuple << std::endl;
         this->tuple_container.remove(idx_in_tuple);
       }
       return;

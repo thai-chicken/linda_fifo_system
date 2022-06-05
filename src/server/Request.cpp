@@ -17,11 +17,20 @@ TuplePatternMessage* Request::getMessage() const
   return this->msg;
 }
 
+int Request::getId() const
+{
+  return this->id;
+}
+
 void Request::setMessage(TuplePatternMessage* msg) 
 {
   this->msg = msg;
 }
 
+void Request::setId(int id)
+{
+  this->id = id;
+}
 // std::string Request::get_request() const
 // {
 //   return this->request_tuple;

@@ -19,10 +19,14 @@ class Request
   // void set_command(const std::string command);
   // std::string get_command() const;
   TuplePatternMessage* getMessage() const;
+  int getId() const;
   void setMessage(TuplePatternMessage* m);
+  void setId(int Id);
+
 
   private:
   TuplePatternMessage* msg;
+  int id;
 };
 
 #endif

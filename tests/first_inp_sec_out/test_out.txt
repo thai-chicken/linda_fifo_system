@@ -1,0 +1,146 @@
+SERVER:
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+No requests in container!
+~~~~~~~
+
+LINDA_SERVER | Fifo created: /tmp/fifo_main
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | SPECIFIED TIMEOUT: 100
+LINDA_SERVER | Message received: 0 and pid received: 44574 
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+Request: (int:>3;float:<2.5)
+~~~~~~~
+
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | SPECIFIED TIMEOUT: 0
+LINDA_SERVER | Message received: 1 and pid received: 44577 
+ifMatch: 1
+LINDA_SERVER | PERFORMING TUPLE!
+LINDA_SERVER | SENDING TO: 44574
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+No requests in container!
+~~~~~~~
+
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | SPECIFIED TIMEOUT: 15
+LINDA_SERVER | Message received: 0 and pid received: 44577 
+LINDA_SERVER | Opened client fifo: /tmp/fifo_44574
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+Request: (LINDA_SERVER | To client sent message: 1 with size 32
+str:*;int:2;float:>=2)
+~~~~~~~
+
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | SPECIFIED TIMEOUT: 0
+LINDA_SERVER | Message received: 1 and pid received: 44574 
+ifMatch: 1
+LINDA_SERVER | PERFORMING TUPLE!
+LINDA_SERVER | SENDING TO: 44577
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+No requests in container!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+CLIENT 1:
+LINDA_CLIENT | Fifo created: /tmp/fifo_44574
+Enter command [input/output/read/exit]: 
+Enter size of tuple pattern: 
+Enter timeout in seconds [0-999]: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter match condition (=,<,<=,>,>=) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+Enter match condition (=,<,<=,>,>=) of element number 2: 
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_44574
+LINDA_CLIENT | Closed own fifo.
+LINDA_CLIENT | Message received: 1 and pid received: 44572 
+Enter command [input/output/read/exit]: 
+Enter size of tuple: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+Enter value of element number 3: 
+Enter type (int, str, float) of element number 3: 
+CREATED TUPLE: (str:"hello";int:2;float:2.4)
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+Enter command [input/output/read/exit]: 
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_44574
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+CLIENT 2:
+LINDA_CLIENT | Fifo created: /tmp/fifo_44577
+Enter command [input/output/read/exit]: 
+Enter size of tuple: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+CREATED TUPLE: (int:4;float:1.5)
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+Enter command [input/output/read/exit]: 
+Enter size of tuple pattern: 
+Enter timeout in seconds [0-999]: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+Enter match condition (=,<,<=,>,>=) of element number 2: 
+Enter value of element number 3: 
+Enter type (int, str, float) of element number 3: 
+Enter match condition (=,<,<=,>,>=) of element number 3: 
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_44577
+LINDA_CLIENT | Closed own fifo.
+LINDA_CLIENT | Message received: 1 and pid received: 44572 
+Enter command [input/output/read/exit]: 
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_44577

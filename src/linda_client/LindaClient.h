@@ -17,7 +17,12 @@ class LindaClient
   public:
   LindaClient();
   ~LindaClient();
-  void action(Message* msg);
+  // void action(Message* msg);
+  void linda_open();
+  void linda_close();
+  void linda_output(Message* msg);
+  void linda_input(Message* msg);
+  void linda_read(Message* msg);
 
   private:
   std::string fifo_name;

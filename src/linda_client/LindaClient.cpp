@@ -72,6 +72,7 @@ void LindaClient::close_main_fifo(FILE* fd_main)
   {
     printf("LINDA_CLIENT | Closed main fifo.\n");
   }
+  sleep(0.2);
 }
 
 
@@ -140,18 +141,29 @@ void LindaClient::send_msg(Message* msg)
   this->close_main_fifo(fd_main);
 }
 
-void LindaClient::action(Message* msg)
+void LindaClient::linda_open()
 {
-
   this->create_fifo();
-  this->send_msg(msg);
-  if (msg->getCommand() == Command::INPUT || msg->getCommand() == Command::READ)
-  {
-    this->receive_msg();
-  }
-  else
-  {
-    printf("LINDA_CLIENT | Skip no reading.\n");
-  }
+}
+
+void LindaClient::linda_close()
+{
   this->destroy_own_fifo();
+}
+
+void LindaClient::linda_read(Message* msg)
+{
+  this->send_msg(msg);
+  this->receive_msg();
+}
+
+void LindaClient::linda_input(Message* msg)
+{
+  this->send_msg(msg);
+  this->receive_msg();
+}
+
+void LindaClient::linda_output(Message* msg)
+{
+  this->send_msg(msg);
 }

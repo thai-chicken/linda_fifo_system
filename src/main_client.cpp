@@ -229,10 +229,11 @@ TupleMessage createTupleMessage()
 
 int main(int argc, char const* argv[])
 {
+  LindaClient client = LindaClient();
+  client.linda_open();
   bool isEnd = false;
   while (!isEnd)
   {
-    LindaClient client = LindaClient();
     std::string cmd;
     std::cout << "Enter command [input/output/read/exit]: " << std::endl;
     std::getline(std::cin, cmd);
@@ -240,6 +241,7 @@ int main(int argc, char const* argv[])
     if (cmd == "exit")
     {
       isEnd = true;
+      client.linda_close();
       break;
     }
     if (cmd_map.find(cmd) == cmd_map.end())
@@ -250,17 +252,17 @@ int main(int argc, char const* argv[])
     if (cmd == "input")
     {
       TuplePatternMessage msg = createTuplePatternMessage(Command::INPUT);
-      client.action(&msg);
+      client.linda_input(&msg);
     }
     else if (cmd == "output")
     {
       TupleMessage msg = createTupleMessage();
-      client.action(&msg);
+      client.linda_output(&msg);
     }
     else if (cmd == "read")
     {
       TuplePatternMessage msg = createTuplePatternMessage(Command::READ);
-      client.action(&msg);
+      client.linda_read(&msg);
     }
   }
 

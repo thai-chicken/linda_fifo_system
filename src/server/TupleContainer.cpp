@@ -85,6 +85,9 @@ int TupleContainer::find(TuplePattern pattern) const
   {
     if (pattern.matches(*it))
     {
+      std::cout << "MECZUJĄCA KROTKA ZNALEZIONA!!!!!!!" << std::endl;
+      std::cout << "pattern size in find: " << pattern.getSize() << std::endl;
+      std::cout << "tuple size in find: " << (*it).getSize() << std::endl;
       return index;
     }
     index++;

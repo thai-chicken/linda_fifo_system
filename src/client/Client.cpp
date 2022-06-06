@@ -14,7 +14,7 @@ void Client::create_fifo()
   {
     perror("CLIENT | Error creating own fifo | ");
   }
-  printf("SERVER | Fifo created: %s\n", this->fifo_name.c_str());
+  printf("CLIENT | Fifo created: %s\n", this->fifo_name.c_str());
 }
 
 FILE* Client::open_main_fifo() const
@@ -94,7 +94,7 @@ void Client::receive_msg()
   Message* msg;
   char buffer_in[MESSAGE_SIZE];
 
-  this->create_fifo();
+  
   FILE* fd_client = open_own_fifo();
 
   if (fgets(buffer_in, sizeof(buffer_in), fd_client) == NULL)
@@ -145,7 +145,7 @@ void Client::receive_msg()
   printf("CLIENT | Message received: %i and pid received: %d \n", msg->getCommand(), msg->getPid());
 
   this->close_own_fifo(fd_client);
-  this->destroy_own_fifo();
+  
 }
 
 void Client::send_msg(Message* msg)
@@ -172,6 +172,7 @@ void Client::send_msg(Message* msg)
 
 void Client::action(Message* msg)
 {
+  this->create_fifo();
   this->send_msg(msg);
   if (msg->getCommand() == Command::INPUT || msg->getCommand() == Command::READ)
   {
@@ -184,4 +185,5 @@ void Client::action(Message* msg)
   {
     printf("CLIENT | Invalid command.\n");
   }
+  this->destroy_own_fifo();
 }

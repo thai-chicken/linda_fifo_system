@@ -213,13 +213,12 @@ void Server::run()
   this->destruct_fifo();
 }
 
-//TODO: Ło kurka co to??????
-//EDIT: CO TU SIE KURWA DZIEJE?!?!
 void Server::perform_request(TuplePatternMessage* msg)
 {
   int idx_in_tuple;
   // Message message_to_send;
   {
+    std::cout << "rozmiar wiadomosci w perform_request: " << msg->getTuplePattern().getSize() << std::endl;
     std::lock_guard<std::mutex> lock(this->mtx_tuple);
     if ((idx_in_tuple = this->tuple_container.find(msg->getTuplePattern())) != -1)
     {

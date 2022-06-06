@@ -18,6 +18,7 @@ std::string TuplePatternElem::getValue() const {
         out += m_value[i];
         i += 1;
     }
+    
 
     return out;
 }
@@ -76,6 +77,8 @@ bool TuplePatternElem::matches(TupleElem& tupleElem) {
 bool TuplePatternElem::intMatches(TupleElem& tupleElem) {
     int realTupleValue = atoi(tupleElem.getValue().c_str());
     int realPatternValue = atoi(this->m_value);
+    std::cout << "realTupleValue: " << realTupleValue << std::endl;
+    std::cout << "realPatternValue: " <<realPatternValue << std::endl;
     switch (this->m_cond)
     {
     case MatchCondition::EQUAL:
@@ -129,6 +132,8 @@ bool TuplePatternElem::stringMatches(TupleElem& tupleElem) {
     switch (this->m_cond)
     {
     case MatchCondition::EQUAL:
+        std::cout << "VAL1: " << this->m_value << " size: " << strlen(this->m_value) << std::endl;
+        std::cout << "VAL2: " << tupleElem.getValue() << " size: " << tupleElem.getValue().length() << std::endl;
         return this->m_value == tupleElem.getValue();
         
     case MatchCondition::GREATER:
@@ -158,7 +163,16 @@ bool operator== (const TuplePatternElem& te1, const TuplePatternElem& te2) {
 
 
 std::ostream& operator<< (std::ostream& out, const TuplePatternElem& elem) {
-    
-    out << "value:" << elem.getValue() << " type:" << elem.getElemType() << " matchCondition: " << elem.getMatchCond();
+    std::string v;
+    if (elem.getElemType() == ElemType::STRING) {
+        v = elem.getValue();
+        boost::algorithm::trim_right(v);
+        v = "\""+v+"\"";
+    }
+    else {
+        v = elem.getValue();
+    }
+    boost::algorithm::trim_right(v);
+    out << type_str_map.find(elem.getElemType())->second << ":" << cond_str_map.find(elem.getMatchCond())->second << v;
     return out;
 }

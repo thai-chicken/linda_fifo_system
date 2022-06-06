@@ -55,10 +55,19 @@ bool operator== (const TupleElem& te1, const TupleElem& te2) {
     (te1.m_type == te2.m_type);
 }
 
-
+//TODO: Usunac whitespacy w krotce
 std::ostream& operator<< (std::ostream& out, const TupleElem& elem) {
-    
-    out << "value:" << elem.getValue() << " type:" << elem.getElemType() << " offset: " << elem.getOffset();
+    std::string v;
+    if (elem.getElemType() == ElemType::STRING) {
+        v = elem.getValue();
+        boost::algorithm::trim_right(v);
+        v = "\""+v+"\"";
+    }
+    else {
+        v = elem.getValue();
+    }
+
+    out << type_str_map.find(elem.getElemType())->second << ":" << v;
     return out;
 }
 

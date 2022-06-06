@@ -29,7 +29,7 @@ public:
     void setSize(int s);
 
 
-    int getSize() {return m_size;};
+    int getSize() const {return m_size;};
     friend std::ostream& operator<< (std::ostream& out, const Tuple& tuple);
     friend bool operator== (const Tuple& t1, const Tuple& t2);
 };

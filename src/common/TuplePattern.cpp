@@ -11,13 +11,21 @@ bool TuplePattern::matches(Tuple tuple) {
     if (this->m_size != tuple.getSize()) {
         return false;
     }
-
+    std::cout << "ROZMIARY SIĘ ZGADZAJĄ" << std::endl;
+    std::cout << "this->m_size: " << this->m_size << std::endl;
+    std::cout << "tuple.getSize(): "<< tuple.getSize() << std::endl;
     bool ifMatch = true;
     for (int i = 0; i < this->m_size; i++) {
+        std::cout << "ELEMENT " << i << std::endl;
+        std::cout << this->m_elements[i] << std::endl;
+        std::cout << tuple.getElements()[i] << std::endl;
         if (!this->m_elements[i].matches(tuple.getElements()[i])) {
+            std::cout << "NIE ZGADZAJĄ SIĘ:" << std::endl;
+            std::cout << this->m_elements[i].getMatchCond() << std::endl;
             ifMatch = false;
         }
     }
+    std::cout << "ifMatch: " << ifMatch << std::endl;
     return ifMatch;
 }
 
@@ -65,8 +73,10 @@ bool operator== (const TuplePattern& t1, const TuplePattern& t2) {
 
 std::ostream& operator<< (std::ostream& out, const TuplePattern& tuple) {
     out << "(";
-    for (TuplePatternElem t: tuple.m_elements) {
-        out << t << ";";
+    for (int i = 0; i < tuple.m_size; i++) {
+        out << tuple.getElements()[i];
+        if ((i + 1) < tuple.m_size)
+        out << ";";
     }
     out << ")";
     return out;

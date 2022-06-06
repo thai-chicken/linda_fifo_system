@@ -5,6 +5,7 @@
 #include "Enums.h"
 #include <iostream>
 #include <string.h>
+#include <boost/algorithm/string.hpp>
 
 // Element krotki ma rozmiar MAX_VALUE_SIZE+1 B
 class TupleElem

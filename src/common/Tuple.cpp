@@ -9,8 +9,10 @@ Tuple::~Tuple() {}
 
 std::ostream& operator<< (std::ostream& out, const Tuple& tuple) {
     out << "(";
-    for (TupleElem t: tuple.m_elements) {
-        out << t << ";";
+    for (int i = 0; i < tuple.m_size; i++) {
+        out << tuple.getElements()[i];
+        if ((i + 1) < tuple.m_size)
+        out << ";";
     }
     out << ")";
     return out;

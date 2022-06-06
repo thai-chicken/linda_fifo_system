@@ -113,13 +113,10 @@ bool TuplePatternElem::intMatches(TupleElem& tupleElem)
 
 bool TuplePatternElem::floatMatches(TupleElem& tupleElem)
 {
-  int realTupleValue = atof(tupleElem.getValue().c_str());
-  int realPatternValue = atof(this->m_value);
+  double realTupleValue = atof(tupleElem.getValue().c_str());
+  double realPatternValue = atof(this->m_value);
   switch (this->m_cond)
   {
-    case MatchCondition::EQUAL:
-      return realPatternValue == realTupleValue;
-
     case MatchCondition::GREATER:
       return realTupleValue > realPatternValue;
 

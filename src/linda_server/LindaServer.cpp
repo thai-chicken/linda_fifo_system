@@ -69,8 +69,12 @@ Message* LindaServer::get_msg_deserialized(FILE* fd_main)
   }
 
   msg->deserialize(buffer);
-  std::cout << "LINDA_SERVER | SPECIFIED TIMEOUT: " << msg->getTimeout() << std::endl;
-  printf("LINDA_SERVER | Message received: %i and pid received: %d \n", msg->getCommand(), msg->getPid());
+
+  if (type == MessageType::TUPLE) {
+    std::cout << "LINDA_SERVER | Received: " << dynamic_cast<TupleMessage*>(msg)->getTuple() << ", PID: " << msg->getPid() << std::endl;
+  } else {
+    std::cout << "LINDA_SERVER | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid() << std::endl;
+  }
   return msg;
 }
 

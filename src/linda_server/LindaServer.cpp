@@ -50,6 +50,7 @@ Message* LindaServer::get_msg_deserialized(FILE* fd_main)
     perror("LINDA_SERVER | Error reading from main fifo.");
     exit(1);
   }
+  fclose(fd_main);
 
   MessageType type = static_cast<MessageType>((buffer[5]) - 48);
   Message* msg;
@@ -104,7 +105,6 @@ void LindaServer::handle_requests()
     msg_in = this->get_msg_deserialized(fd_main);
     this->handle_msg(msg_in);
     this->show_state();
-    fclose(fd_main);
   }
 }
 
@@ -229,17 +229,23 @@ void LindaServer::perform_request(TuplePatternMessage* msg)
 void LindaServer::perform_timeout(int request_id, Message* msg)
 {
   int idx_in_req;
+  bool is_state_to_show = false;
   sleep(msg->getTimeout());
   {
     std::lock_guard<std::mutex> lock(this->mtx_request);
     if ((idx_in_req = this->request_container.find_id(request_id)) != -1)
     {
+      is_state_to_show = true;
       this->request_container.remove(idx_in_req);
       msg->setCommand(Command::TIMEOUT);
       std::cout << "LINDA_SERVER | SPECIFIED TIMEOUT FINISHED: " << msg->getTimeout() << std::endl;
       std::thread send_thread(&LindaServer::send_to_client, this, msg);
       send_thread.detach();
     }
+  }
+  if (is_state_to_show)
+  {
+    this->show_state();
   }
 }
 

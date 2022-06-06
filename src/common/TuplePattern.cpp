@@ -14,19 +14,11 @@ bool TuplePattern::matches(Tuple tuple)
   {
     return false;
   }
-  std::cout << "ROZMIARY SIĘ ZGADZAJĄ" << std::endl;
-  std::cout << "this->m_size: " << this->m_size << std::endl;
-  std::cout << "tuple.getSize(): " << tuple.getSize() << std::endl;
   bool ifMatch = true;
   for (int i = 0; i < this->m_size; i++)
   {
-    std::cout << "ELEMENT " << i << std::endl;
-    std::cout << this->m_elements[i] << std::endl;
-    std::cout << tuple.getElements()[i] << std::endl;
     if (!this->m_elements[i].matches(tuple.getElements()[i]))
     {
-      std::cout << "NIE ZGADZAJĄ SIĘ:" << std::endl;
-      std::cout << this->m_elements[i].getMatchCond() << std::endl;
       ifMatch = false;
     }
   }

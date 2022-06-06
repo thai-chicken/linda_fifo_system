@@ -99,6 +99,8 @@ void LindaClient::receive_msg()
     perror("LINDA_CLIENT | Error reading from own fifo | ");
     exit(1);
   }
+  this->close_own_fifo(fd_client);
+
 
   MessageType type = static_cast<MessageType>((buffer_in[5]) - 48);
 
@@ -119,8 +121,6 @@ void LindaClient::receive_msg()
   msg->deserialize(buffer_in);
 
   printf("LINDA_CLIENT | Message received: %i and pid received: %d \n", msg->getCommand(), msg->getPid());
-
-  this->close_own_fifo(fd_client);
 }
 
 void LindaClient::send_msg(Message* msg)
@@ -142,6 +142,7 @@ void LindaClient::send_msg(Message* msg)
 
 void LindaClient::action(Message* msg)
 {
+
   this->create_fifo();
   this->send_msg(msg);
   if (msg->getCommand() == Command::INPUT || msg->getCommand() == Command::READ)
@@ -150,7 +151,7 @@ void LindaClient::action(Message* msg)
   }
   else
   {
-    printf("LINDA_CLIENT | Invalid command.\n");
+    printf("LINDA_CLIENT | Skip no reading.\n");
   }
   this->destroy_own_fifo();
 }

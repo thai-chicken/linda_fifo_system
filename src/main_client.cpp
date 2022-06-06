@@ -95,23 +95,27 @@ ElemType getElemType(int num)
   return elemType;
 }
 
-MatchCondition getElemCondition(int num)
+MatchCondition getElemCondition(int num, ElemType type)
 {
   MatchCondition condition;
   bool valid = false;
   while (!valid)
   {
     std::string cond;
-    std::cout << "Enter match condition (*,=,<,<=,>,>=) of element number " << num << ": " << std::endl;
+    std::cout << "Enter match condition (=,<,<=,>,>=) of element number " << num << ": " << std::endl;
     std::getline(std::cin, cond);
     if (cond == "\n")
     {
       valid = true;
       condition = MatchCondition::ANY;
     }
-    else if (cond_map.find(cond) == cond_map.end())
+    else if (type == ElemType::FLOAT && cond == "=")
     {
-      std::cout << "Invalid match condition. Try again " << std::endl;
+      std::cout << "Cant use '=' condidtion for type float! Try again!" << std::endl;
+    }
+    else if (cond == "*" || cond_map.find(cond) == cond_map.end())
+    {
+      std::cout << "Invalid match condition. Try again!" << std::endl;
     }
     else
     {
@@ -154,7 +158,7 @@ TuplePatternMessage createTuplePatternMessage(Command cmd)
     types.push_back(type);
     if (value != "")
     {
-      MatchCondition cond = getElemCondition(i + 1);
+      MatchCondition cond = getElemCondition(i + 1, type);
       conditions.push_back(cond);
     }
     else

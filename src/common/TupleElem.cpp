@@ -63,17 +63,13 @@ bool operator==(const TupleElem& te1, const TupleElem& te2)
 std::ostream& operator<<(std::ostream& out, const TupleElem& elem)
 {
   std::string v;
+  v = elem.getValue();
   if (elem.getElemType() == ElemType::STRING)
   {
-    v = elem.getValue();
     boost::algorithm::trim_right(v);
     v = "\"" + v + "\"";
   }
-  else
-  {
-    v = elem.getValue();
-  }
-
+  boost::algorithm::trim_right(v);
   out << type_str_map.find(elem.getElemType())->second << ":" << v;
   return out;
 }

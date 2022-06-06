@@ -1,8 +1,8 @@
-#include "server/Server.h"
+#include "linda_server/LindaServer.h"
 
 int main()
 {
-  Server server;
+  LindaServer server;
   server.run();
   return 0;
 }

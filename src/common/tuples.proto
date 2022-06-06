@@ -1,9 +1,0 @@
-syntax = "proto2";
-
-package tuples;
-
-message Message {
-	required int32 pid = 1;
-	required string command = 2;
-	required string msg = 3;
-}

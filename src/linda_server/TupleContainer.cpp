@@ -1,4 +1,4 @@
-#include <src/server/TupleContainer.h>
+#include "TupleContainer.h"
 
 TupleContainer::TupleContainer()
 {
@@ -59,11 +59,11 @@ int TupleContainer::size() const
 
 void TupleContainer::show_elems() const
 {
-  
+
   if (tuples.size() > 0)
   {
     for (std::list<Tuple>::const_iterator it = tuples.begin(); it != tuples.end(); ++it)
-    { 
+    {
       std::cout << (*it) << std::endl;
     }
   }
@@ -85,9 +85,6 @@ int TupleContainer::find(TuplePattern pattern) const
   {
     if (pattern.matches(*it))
     {
-      std::cout << "MECZUJĄCA KROTKA ZNALEZIONA!!!!!!!" << std::endl;
-      std::cout << "pattern size in find: " << pattern.getSize() << std::endl;
-      std::cout << "tuple size in find: " << (*it).getSize() << std::endl;
       return index;
     }
     index++;

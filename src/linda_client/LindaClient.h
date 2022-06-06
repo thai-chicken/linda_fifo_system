@@ -1,24 +1,22 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef LINDACLIENT_H
+#define LINDACLIENT_H
 
+#include "../common/Constants.h"
+#include "../common/Enums.h"
 #include "../common/Message.h"
-// #include "../common/tuples.pb.h"
+#include "../common/TupleMessage.h"
+#include "../common/TuplePatternMessage.h"
 
 #include <boost/algorithm/string.hpp>
 #include <string>
 #include <sys/stat.h>
-#include "../common/Constants.h"
-#include "../common/Enums.h"
-#include "../common/TupleMessage.h"
-#include "../common/Message.h"
-#include "../common/TuplePatternMessage.h"
 #define FIFO_MAIN_PATH "/tmp/fifo_main"
 
-class Client
+class LindaClient
 {
   public:
-  Client();
-  ~Client();
+  LindaClient();
+  ~LindaClient();
   void action(Message* msg);
 
   private:

@@ -1,25 +1,23 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-#include <string>
 #include "Constants.h"
 #include "Enums.h"
-#include "TuplePattern.h"
 #include "Tuple.h"
-// #define MSG_SIZE 80
+#include "TuplePattern.h"
 
-// Sama wiadomosc zajmowac bedzie 7B + int to 11?
+#include <string>
 class Message
 {
-private:
+  private:
   pid_t pid;
   Command cmd;
   MessageType type;
-  int timeout=0;
+  int timeout = 0;
 
-public:
-  Message() {};
-  virtual ~Message() {};
+  public:
+  Message(){};
+  virtual ~Message(){};
   pid_t getPid() const;
   Command getCommand() const;
   MessageType getType() const;
@@ -32,7 +30,6 @@ public:
 
   virtual std::string serialize() = 0;
   virtual void deserialize(std::string serialized) = 0;
-
 };
 
 #endif // MESSAGE_H

@@ -1,16 +1,16 @@
 CXX = g++
-SOURCES = src/client.cpp src/server.cpp
+SOURCES = src/main_client.cpp src/main_server.cpp
 
 all: client server
 
 requests.o:
-	$(CXX) -std=c++11 -I . -c src/server/Request.cpp -o bin/request.o
+	$(CXX) -std=c++11 -I . -c src/linda_server/Request.cpp -o bin/request.o
 
 requestcontainer.o: requests.o src/common/TuplePatternMessage.h
-	$(CXX) -std=c++11 -I . -c src/server/RequestContainer.cpp -o bin/requestcontainer.o
+	$(CXX) -std=c++11 -I . -c src/linda_server/RequestContainer.cpp -o bin/requestcontainer.o
 
 tuplecontainer.o:  src/common/Tuple.h
-	$(CXX) -std=c++11 -I . -c src/server/TupleContainer.cpp -o bin/tuplecontainer.o
+	$(CXX) -std=c++11 -I . -c src/linda_server/TupleContainer.cpp -o bin/tuplecontainer.o
 
 tuple.o: src/common/Constants.h src/common/Enums.h src/common/TupleElem.h
 	$(CXX) -std=c++11 -I . -c src/common/Tuple.cpp -o bin/tuple.o
@@ -34,10 +34,10 @@ message.o: src/common/Enums.h src/common/Constants.h src/common/TuplePattern.h s
 	$(CXX) -std=c++11 -I . -c src/common/Message.cpp -o bin/message.o
 
 server.o: requestcontainer.o tuplecontainer.o src/common/Message.h 
-	$(CXX) -std=c++11 -I . -c src/server/Server.cpp -o bin/server.o
+	$(CXX) -std=c++11 -I . -c src/linda_server/LindaServer.cpp -o bin/server.o
 
 client.o: src/common/Message.h src/common/Constants.h src/common/Enums.h src/common/TupleMessage.h src/common/Message.h src/common/TuplePatternMessage.h src/common/TupleElem.h
-	$(CXX) -std=c++11 -I . -c src/client/Client.cpp -o bin/client.o
+	$(CXX) -std=c++11 -I . -c src/linda_client/LindaClient.cpp -o bin/client.o
 
 client: client.o tuplemessage.o tuple.o tupleelem.o tuplepattern.o tuplepatternelem.o message.o src/common/Constants.h tuplepatternmessage.o
 	$(CXX) src/main_client.cpp  bin/client.o bin/tupleelem.o bin/tuple.o bin/tuplepattern.o bin/tuplepatternelem.o bin/message.o bin/tuplemessage.o bin/tuplepatternmessage.o `pkg-config --cflags` -std=c++11 -o bin/client -I .

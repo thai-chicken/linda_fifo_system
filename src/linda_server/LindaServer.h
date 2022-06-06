@@ -1,26 +1,27 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef LINDASERVER_H
+#define LINDASERVER_H
 
 #include "../common/Message.h"
 // #include "../common/Semaphore.h"
 // #include "../common/tuples.pb.h"
+#include "../common/TupleMessage.h"
+#include "../common/TuplePatternMessage.h"
 #include "RequestContainer.h"
 #include "TupleContainer.h"
 #include "boost/algorithm/string.hpp"
+
 #include <fcntl.h>
+#include <mutex>
 #include <sys/stat.h>
 #include <thread>
-#include <mutex>
-#include "../common/TupleMessage.h"
-#include "../common/TuplePatternMessage.h"
 
 #define FIFO_MAIN_PATH "/tmp/fifo_main"
 
-class Server
+class LindaServer
 {
   public:
-  Server();
-  ~Server();
+  LindaServer();
+  ~LindaServer();
   void run();
   void show_state();
 
@@ -29,13 +30,16 @@ class Server
   TupleContainer tuple_container;
   std::mutex mtx_request; // mutex controlling access to request_container
   std::mutex mtx_tuple; // mutex controlling access to tuple_container
-  std::mutex mtx_id; //mutex controlling access to request_id
+  std::mutex mtx_id; // mutex controlling access to request_id
 
   std::string fifo_name;
   bool quit;
   int request_id;
 
-  void increment_id() {this->request_id++;};
+  void increment_id()
+  {
+    this->request_id++;
+  };
   void handle_requests();
   void perform_request(TuplePatternMessage* msg);
   void perform_tuple(TupleMessage* msg);

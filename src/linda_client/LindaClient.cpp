@@ -127,8 +127,7 @@ void LindaClient::receive_msg()
   }
   else
   {
-    std::cout << "LINDA_CLIENT | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid()
-              << std::endl;
+    std::cout << "LINDA_CLIENT | Request timeouted, PID: " << msg->getPid() << std::endl;
   }
 }
 void LindaClient::send_msg(Message* msg)

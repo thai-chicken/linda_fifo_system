@@ -205,8 +205,14 @@ void LindaServer::perform_request(TuplePatternMessage* msg)
     if ((idx_in_tuple = this->tuple_container.find(msg->getTuplePattern())) != -1)
     {
       printf("LINDA_SERVER | PERFORMING REQUEST!\n");
-      // TODO: trzeba brac tuple i ja odsylac, w tym przypadku odsylany jest z powrotem wzorzec xd
-      std::thread send_thread(&LindaServer::send_to_client, this, msg);
+      Tuple t = this->tuple_container.get(idx_in_tuple);
+      TupleMessage* tmsg = new TupleMessage;
+      tmsg->setTuple(t);
+      tmsg->setPid(msg->getPid());
+      tmsg->setType(MessageType::TUPLE);
+      tmsg->setCommand(msg->getCommand());
+      tmsg->setTimeout(msg->getTimeout());
+      std::thread send_thread(&LindaServer::send_to_client, this, tmsg);
       send_thread.detach();
 
       if (msg->getCommand() == Command::INPUT)

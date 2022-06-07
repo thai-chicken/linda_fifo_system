@@ -12,7 +12,7 @@ No requests in container!
 LINDA_SERVER | Fifo created: /tmp/fifo_main
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:>3;float:<2.5), PID: 37223
+LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 36867
 
 Tuples:
 No tuples in container
@@ -20,47 +20,42 @@ No tuples in container
 
 
 Requests:
-Request: (int:>3;float:<2.5)
+Request: (int:<4;str:"abc")
 ~~~~~~~
 
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:4;float:1.5), PID: 37227
-LINDA_SERVER | PERFORMING TUPLE!
-LINDA_SERVER | SENDING TO: 37223
+LINDA_SERVER | Received: (int:-6;str:"abcd";float:3.14), PID: 36870
 
 Tuples:
-No tuples in container
+(int:-6;str:"abcd";float:3.14)
 ~~~~~~~
 
 
 Requests:
-No requests in container!
+Request: (int:<4;str:"abc")
 ~~~~~~~
 
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Opened client fifo: /tmp/fifo_37223
-LINDA_SERVER | Received: (str:*;int:2;float:>=2), PID: 37227
-LINDA_SERVER | To client sent message: 1 with size 32
+LINDA_SERVER | Received: (int:2;int:1;int:3;int:7), PID: 36870
 
 Tuples:
-No tuples in container
+(int:-6;str:"abcd";float:3.14)
+(int:2;int:1;int:3;int:7)
 ~~~~~~~
 
 
 Requests:
-Request: (str:*;int:2;float:>=2)
+Request: (int:<4;str:"abc")
 ~~~~~~~
 
 LINDA_SERVER | Waiting for clients...
-LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (str:"hello";int:2;float:2.4), PID: 37223
-LINDA_SERVER | PERFORMING TUPLE!
-LINDA_SERVER | SENDING TO: 37227
+LINDA_SERVER | SPECIFIED TIMEOUT FINISHED: 5
 
 Tuples:
-No tuples in container
+(int:-6;str:"abcd";float:3.14)
+(int:2;int:1;int:3;int:7)
 ~~~~~~~
 
 
@@ -70,7 +65,7 @@ No requests in container!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 1:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_37223
+LINDA_CLIENT | Fifo created: /tmp/fifo_36867
 Enter command [input/output/read/exit]: 
 Enter size of tuple pattern: 
 Enter timeout in seconds [0-999]: 
@@ -80,63 +75,48 @@ Enter match condition (=,<,<=,>,>=) of element number 1:
 Enter value of element number 2: 
 Enter type (int, str, float) of element number 2: 
 Enter match condition (=,<,<=,>,>=) of element number 2: 
-CREATED TUPLE PATTERN: (int:>3;float:<2.5)
+CREATED TUPLE PATTERN: (int:<4;str:"abc")
 LINDA_CLIENT | Opened main fifo!
 LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
-LINDA_CLIENT | Opened own fifo: /tmp/fifo_37223
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_36867
 LINDA_CLIENT | Closed own fifo.
-LINDA_CLIENT | Received: (int:4;float:1.5), PID: 37221
+LINDA_CLIENT | Request timeouted, PID: 36865
 Enter command [input/output/read/exit]: 
-Enter size of tuple: 
-Enter value of element number 1: 
-Enter type (int, str, float) of element number 1: 
-Enter value of element number 2: 
-Enter type (int, str, float) of element number 2: 
-Enter value of element number 3: 
-Enter type (int, str, float) of element number 3: 
-CREATED TUPLE: (str:"hello";int:2;float:2.4)
-LINDA_CLIENT | Opened main fifo!
-LINDA_CLIENT | Sending message!
-LINDA_CLIENT | Sent message!
-LINDA_CLIENT | Closed main fifo.
-Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_37223
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36867
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 2:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_37227
+LINDA_CLIENT | Fifo created: /tmp/fifo_36870
 Enter command [input/output/read/exit]: 
 Enter size of tuple: 
 Enter value of element number 1: 
 Enter type (int, str, float) of element number 1: 
 Enter value of element number 2: 
 Enter type (int, str, float) of element number 2: 
-CREATED TUPLE: (int:4;float:1.5)
+Enter value of element number 3: 
+Enter type (int, str, float) of element number 3: 
+CREATED TUPLE: (int:-6;str:"abcd";float:3.14)
 LINDA_CLIENT | Opened main fifo!
 LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
 Enter command [input/output/read/exit]: 
-Enter size of tuple pattern: 
-Enter timeout in seconds [0-999]: 
+Enter size of tuple: 
 Enter value of element number 1: 
 Enter type (int, str, float) of element number 1: 
 Enter value of element number 2: 
 Enter type (int, str, float) of element number 2: 
-Enter match condition (=,<,<=,>,>=) of element number 2: 
 Enter value of element number 3: 
 Enter type (int, str, float) of element number 3: 
-Enter match condition (=,<,<=,>,>=) of element number 3: 
-CREATED TUPLE PATTERN: (str:*;int:2;float:>=2)
+Enter value of element number 4: 
+Enter type (int, str, float) of element number 4: 
+CREATED TUPLE: (int:2;int:1;int:3;int:7)
 LINDA_CLIENT | Opened main fifo!
 LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
-LINDA_CLIENT | Opened own fifo: /tmp/fifo_37227
-LINDA_CLIENT | Closed own fifo.
-LINDA_CLIENT | Received: (str:"hello";int:2;float:2.4), PID: 37221
 Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_37227
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36870

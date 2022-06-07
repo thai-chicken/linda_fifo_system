@@ -1,0 +1,10 @@
+input
+2
+5
+4
+int
+<
+abc
+str
+=
+exit

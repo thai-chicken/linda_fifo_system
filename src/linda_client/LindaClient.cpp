@@ -120,11 +120,15 @@ void LindaClient::receive_msg()
   }
 
   msg->deserialize(buffer_in);
-  
-  if (type == MessageType::TUPLE) {
+
+  if (type == MessageType::TUPLE)
+  {
     std::cout << "LINDA_CLIENT | Received: " << dynamic_cast<TupleMessage*>(msg)->getTuple() << ", PID: " << msg->getPid() << std::endl;
-  } else {
-    std::cout << "LINDA_CLIENT | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid() << std::endl;
+  }
+  else
+  {
+    std::cout << "LINDA_CLIENT | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid()
+              << std::endl;
   }
 }
 void LindaClient::send_msg(Message* msg)

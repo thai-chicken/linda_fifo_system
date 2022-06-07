@@ -175,6 +175,7 @@ TuplePatternMessage createTuplePatternMessage(Command cmd)
   }
 
   TuplePattern tp = createTuplePattern(values, types, conditions, size);
+  std::cout << "CREATED TUPLE PATTERN: " << tp << std::endl;
   patternMessage.setTuplePattern(tp);
   patternMessage.setCommand(cmd);
   patternMessage.setTimeout(timeout);

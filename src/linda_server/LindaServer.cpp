@@ -70,10 +70,14 @@ Message* LindaServer::get_msg_deserialized(FILE* fd_main)
 
   msg->deserialize(buffer);
 
-  if (type == MessageType::TUPLE) {
+  if (type == MessageType::TUPLE)
+  {
     std::cout << "LINDA_SERVER | Received: " << dynamic_cast<TupleMessage*>(msg)->getTuple() << ", PID: " << msg->getPid() << std::endl;
-  } else {
-    std::cout << "LINDA_SERVER | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid() << std::endl;
+  }
+  else
+  {
+    std::cout << "LINDA_SERVER | Received: " << dynamic_cast<TuplePatternMessage*>(msg)->getTuplePattern() << ", PID: " << msg->getPid()
+              << std::endl;
   }
   return msg;
 }
@@ -201,6 +205,7 @@ void LindaServer::perform_request(TuplePatternMessage* msg)
     if ((idx_in_tuple = this->tuple_container.find(msg->getTuplePattern())) != -1)
     {
       printf("LINDA_SERVER | PERFORMING REQUEST!\n");
+      // TODO: trzeba brac tuple i ja odsylac, w tym przypadku odsylany jest z powrotem wzorzec xd
       std::thread send_thread(&LindaServer::send_to_client, this, msg);
       send_thread.detach();
 

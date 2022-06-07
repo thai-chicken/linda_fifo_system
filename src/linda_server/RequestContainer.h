@@ -1,8 +1,8 @@
 #ifndef REQUESTCONTAINER_H
 #define REQUESTCONTAINER_H
 
-#include "Request.h"
 #include "../common/TuplePatternMessage.h"
+#include "Request.h"
 
 #include <list>
 

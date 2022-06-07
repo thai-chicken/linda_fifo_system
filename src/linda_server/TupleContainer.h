@@ -1,11 +1,12 @@
 #ifndef TUPLECONTAINER_H
 #define TUPLECONTAINER_H
 
+#include "../common/Tuple.h"
+#include "../common/TuplePattern.h"
+
 #include <iostream>
 #include <list>
 #include <string>
-#include "../common/TuplePattern.h"
-#include "../common/Tuple.h"
 
 class TupleContainer
 {

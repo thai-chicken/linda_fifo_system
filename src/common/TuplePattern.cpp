@@ -22,7 +22,6 @@ bool TuplePattern::matches(Tuple tuple)
       ifMatch = false;
     }
   }
-  std::cout << "ifMatch: " << ifMatch << std::endl;
   return ifMatch;
 }
 

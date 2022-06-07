@@ -43,7 +43,6 @@ class TuplePatternMessage : public Message
     this->setType(static_cast<MessageType>(serialized[PID_MAX_DIGITS] - 48));
     this->setCommand(static_cast<Command>(serialized[PID_MAX_DIGITS + 1] - 48));
     this->setTimeout(atoi(serialized.substr(PID_MAX_DIGITS + 2, MAX_TIMEOUT_LENGTH).c_str()));
-    // Wzorzec zajmuje MAX_N_OF_ELEMENTS*(MAX_VALUE_SIZE+1) + 1 bajty
     this->pattern.deserialize(
         serialized.substr(PID_MAX_DIGITS + 2 + MAX_TIMEOUT_LENGTH, MAX_N_OF_ELEMENTS * (MAX_VALUE_SIZE + 1) + 1).c_str());
   };

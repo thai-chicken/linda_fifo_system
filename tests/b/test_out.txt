@@ -1,0 +1,80 @@
+SERVER:
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+No requests in container!
+~~~~~~~
+
+LINDA_SERVER | Fifo created: /tmp/fifo_main
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 36661
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+Request: (int:<4;str:"abc")
+~~~~~~~
+
+LINDA_SERVER | Waiting for clients...
+LINDA_SERVER | Opened main fifo!
+LINDA_SERVER | Received: (int:3;str:"abc"), PID: 36664
+LINDA_SERVER | PERFORMING TUPLE!
+LINDA_SERVER | SENDING TO: 36661
+
+Tuples:
+No tuples in container
+~~~~~~~
+
+
+Requests:
+No requests in container!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CLIENT 1:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LINDA_CLIENT | Fifo created: /tmp/fifo_36661
+Enter command [input/output/read/exit]: 
+Enter size of tuple pattern: 
+Enter timeout in seconds [0-999]: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter match condition (=,<,<=,>,>=) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+Enter match condition (=,<,<=,>,>=) of element number 2: 
+CREATED TUPLE PATTERN: (int:<4;str:"abc")
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_36661
+LINDA_CLIENT | Closed own fifo.
+LINDA_CLIENT | Received: (int:3;str:"abc"), PID: 36659
+Enter command [input/output/read/exit]: 
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36661
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CLIENT 2:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LINDA_CLIENT | Fifo created: /tmp/fifo_36664
+Enter command [input/output/read/exit]: 
+Enter size of tuple: 
+Enter value of element number 1: 
+Enter type (int, str, float) of element number 1: 
+Enter value of element number 2: 
+Enter type (int, str, float) of element number 2: 
+CREATED TUPLE: (int:3;str:"abc")
+LINDA_CLIENT | Opened main fifo!
+LINDA_CLIENT | Sending message!
+LINDA_CLIENT | Sent message!
+LINDA_CLIENT | Closed main fifo.
+Enter command [input/output/read/exit]: 
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36664

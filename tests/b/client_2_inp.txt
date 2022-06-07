@@ -1,0 +1,7 @@
+output
+2
+3
+int
+abc
+str
+exit

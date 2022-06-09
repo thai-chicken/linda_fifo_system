@@ -12,7 +12,7 @@ No requests in container!
 LINDA_SERVER | Fifo created: /tmp/fifo_main
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 36661
+LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 4695
 
 Tuples:
 No tuples in container
@@ -25,9 +25,9 @@ Request: (int:<4;str:"abc")
 
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:3;str:"abc"), PID: 36664
+LINDA_SERVER | Received: (int:3;str:"abc"), PID: 4698
 LINDA_SERVER | PERFORMING TUPLE!
-LINDA_SERVER | SENDING TO: 36661
+LINDA_SERVER | SENDING TO: 4695
 
 Tuples:
 No tuples in container
@@ -40,7 +40,7 @@ No requests in container!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 1:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_36661
+LINDA_CLIENT | Fifo created: /tmp/fifo_4695
 Enter command [input/output/read/exit]: 
 Enter size of tuple pattern: 
 Enter timeout in seconds [0-999]: 
@@ -55,16 +55,16 @@ LINDA_CLIENT | Opened main fifo!
 LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
-LINDA_CLIENT | Opened own fifo: /tmp/fifo_36661
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_4695
 LINDA_CLIENT | Closed own fifo.
-LINDA_CLIENT | Received: (int:3;str:"abc"), PID: 36659
+LINDA_CLIENT | Received: (int:3;str:"abc"), PID: 4693
 Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36661
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_4695
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 2:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_36664
+LINDA_CLIENT | Fifo created: /tmp/fifo_4698
 Enter command [input/output/read/exit]: 
 Enter size of tuple: 
 Enter value of element number 1: 
@@ -77,4 +77,4 @@ LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
 Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36664
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_4698

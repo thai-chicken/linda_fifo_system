@@ -33,6 +33,8 @@ def client2(directory_name):
             
 
 def main(dir_name):
+    if os.path.exists("/tmp/fifo_main"):
+        os.remove("/tmp/fifo_main")
     p_server = Process(target=server, args=(dir_name,))
     p_server.start()
     time.sleep(1)

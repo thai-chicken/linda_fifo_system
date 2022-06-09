@@ -12,7 +12,7 @@ No requests in container!
 LINDA_SERVER | Fifo created: /tmp/fifo_main
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:3;str:"abc"), PID: 36442
+LINDA_SERVER | Received: (int:3;str:"abc"), PID: 4630
 
 Tuples:
 (int:3;str:"abc")
@@ -25,7 +25,7 @@ No requests in container!
 
 LINDA_SERVER | Waiting for clients...
 LINDA_SERVER | Opened main fifo!
-LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 36444
+LINDA_SERVER | Received: (int:<4;str:"abc"), PID: 4632
 LINDA_SERVER | PERFORMING REQUEST!
 
 Tuples:
@@ -39,7 +39,7 @@ No requests in container!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 1:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_36442
+LINDA_CLIENT | Fifo created: /tmp/fifo_4630
 Enter command [input/output/read/exit]: 
 Enter size of tuple: 
 Enter value of element number 1: 
@@ -52,12 +52,12 @@ LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
 Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36442
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_4630
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 CLIENT 2:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINDA_CLIENT | Fifo created: /tmp/fifo_36444
+LINDA_CLIENT | Fifo created: /tmp/fifo_4632
 Enter command [input/output/read/exit]: 
 Enter size of tuple pattern: 
 Enter timeout in seconds [0-999]: 
@@ -72,8 +72,8 @@ LINDA_CLIENT | Opened main fifo!
 LINDA_CLIENT | Sending message!
 LINDA_CLIENT | Sent message!
 LINDA_CLIENT | Closed main fifo.
-LINDA_CLIENT | Opened own fifo: /tmp/fifo_36444
+LINDA_CLIENT | Opened own fifo: /tmp/fifo_4632
 LINDA_CLIENT | Closed own fifo.
-LINDA_CLIENT | Received: (int:3;str:"abc"), PID: 36439
+LINDA_CLIENT | Received: (int:3;str:"abc"), PID: 4626
 Enter command [input/output/read/exit]: 
-LINDA_CLIENT | Unlinked fifo: /tmp/fifo_36444
+LINDA_CLIENT | Unlinked fifo: /tmp/fifo_4632
